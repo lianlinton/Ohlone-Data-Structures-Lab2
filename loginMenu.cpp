@@ -1,10 +1,10 @@
 /*******************************************************
 
- * Program Name: Lab2 Project
+ * Program Name: Lab 3 Project
 
  * Author: Lian Elsa Linton
 
- * Date: September 23, 2022
+ * Date: October 1, 2022
 
  * Description: Login class loads the users.csv file and updates a vector with Login information
  *******************************************************/

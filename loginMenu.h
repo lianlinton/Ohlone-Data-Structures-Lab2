@@ -1,10 +1,10 @@
 /*******************************************************
 
- * Program Name: Lab2 Project
+ * Program Name: Lab 3 Project
 
  * Author: Lian Elsa Linton
 
- * Date: September 23, 2022
+ * Date: October 1, 2022
 
  * Description: Base class is the Menu Class and updates the user data information into Login objects in a vector array. 
  *******************************************************/

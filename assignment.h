@@ -1,10 +1,10 @@
 /*******************************************************
 
- * Program Name: Lab2 Project
+ * Program Name: Lab 3 Project
 
  * Author: Lian Elsa Linton
 
- * Date: September 23, 2022
+ * Date: October 1, 2022
 
  * Description: Assignment class represents the Assignments section on Canvas. 
 

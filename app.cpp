@@ -21,7 +21,7 @@ int main(){
 	if (myCanvas.doLogin()){
 		myCanvas.doMenu();
 	}
-	//myCanvas.doMenu();
+	myCanvas.doMenu();
 	cout << "Done everything!" << endl;
 	//myCanvas.~MyCanvas();
 	exit(0);

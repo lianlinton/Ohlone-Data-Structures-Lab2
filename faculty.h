@@ -1,10 +1,10 @@
 /*******************************************************
 
- * Program Name: Lab2 Project
+ * Program Name: Lab 3 Project
 
  * Author: Lian Elsa Linton
 
- * Date: September 23, 2022
+ * Date: October 1, 2022
 
  * Description: Base class is Person class with specific data attached for faculty members.
  *******************************************************/
@@ -36,8 +36,6 @@ class Faculty : public Person {
 			return out;
 		};
 
-		//Operators
-		// operator== (const Course& other) const;
 	
 	private: 
 		string id;

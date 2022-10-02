@@ -1,10 +1,10 @@
 /*******************************************************
 
- * Program Name: Lab2 Project
+ * Program Name: Lab 3 Project
 
  * Author: Lian Elsa Linton
 
- * Date: September 23, 2022
+ * Date: October 1, 2022
 
  * Description: Handles managing the menu functions that are executed based on the user's choice. 
  *******************************************************/
@@ -21,6 +21,7 @@
 
 using namespace std;
 
+//Constructor
 MyCanvas::MyCanvas() {
 	Course *pCourse = new Course;
 	MyOhlone page(pCourse);
@@ -33,6 +34,7 @@ MyCanvas::MyCanvas() {
 	studentList = new vector<Student*>();
 }
 
+//Loading Faculty Data
 void MyCanvas::initFacultyData() {
 	ifstream inFile;
 	inFile.open("faculty_data.csv");
@@ -80,9 +82,10 @@ void MyCanvas::initFacultyData() {
 	inFile.close();
 }
 
+//Loading Course Data
 void MyCanvas::initCourseData(){
 	ifstream inFile;
-	inFile.open("course_data_new.csv");
+	inFile.open("course_data.csv");
     //Fall,2022,8/24/2022,12/20/2022,Programming W/ Data Structures,CS-124-03,085698,T TH,Online,Newark,Pham,3
 	string term;        // Fall
 	string year;            // 2022
@@ -136,19 +139,20 @@ void MyCanvas::initCourseData(){
 		_course->setOccurrence(occurrence);
 		_course->setPlatform(platform);
 		num = stoi(credit);
-		cout << num << endl;
+		//cout << num << endl;
 		_course->setCredit(num);
-		cout << "Course: " << sizeof(_course) << endl;
+		//cout << "Course: " << sizeof(_course) << endl;
 		courseList->push_back(_course);
-		cout << "Counter:" << counter << endl;
+		//cout << "Counter:" << counter << endl;
 		counter++;
 	}
 	inFile.close();
 }
 
+//Loading Student Data
 void MyCanvas::initStudentData(){
 	ifstream inFile;
-	inFile.open("faculty_data.csv");
+	inFile.open("student_data.csv");
     string id;
 	string firstName; 
 	string lastName; 
@@ -188,22 +192,277 @@ void MyCanvas::initStudentData(){
 	}
 }
 
+//DateType Operator Overloading
+bool operator==(DateType first, DateType second){
+	return first.getDate() == second.getDate();
+}
 
+bool operator!=(DateType first, DateType second){
+	return first.getDate() != second.getDate();
+}
 
-bool operator!=(Course first, Course second){
-	//Add dates + faculty class
-	return first.getTerm() != second.getTerm() || first.getYear() != second.getYear() || first.getName() != second.getName()
-		|| first.getSectionName() != second.getSectionName() || first.getSectionNumber() != second.getSectionNumber()
-		|| first.getLocation() != second.getLocation() || first.getCredit() != second.getCredit() 
-		|| first.getOccurrence() != second.getOccurrence() || first.getPlatform() != second.getPlatform();
+//Faculty Operator Overloading
+bool operator!=(Faculty first, Faculty second){
+	return first.getID() != second.getID() || first.getFirstName() != second.getFirstName() || first.getLastName() != second.getLastName()
+		|| first.getAddress() != second.getAddress() || first.getCity() != second.getCity() || first.getDepartment() != second.getDepartment()
+		|| first.getState() != second.getState() || first.getZip() != second.getZip() 
+		|| first.getNumber() != second.getNumber() || first.getEmail() != second.getEmail();
+}
+
+bool operator==(Faculty first, Faculty second){
+	return first.getID() == second.getID() && first.getFirstName() == second.getFirstName() && first.getLastName() == second.getLastName()
+		&& first.getAddress() == second.getAddress() && first.getCity() == second.getCity() && first.getDepartment() == second.getDepartment()
+		&& first.getState() == second.getState() && first.getZip() == second.getZip() 
+		&& first.getNumber() == second.getNumber() && first.getEmail() == second.getEmail();
+}
+
+bool operator<(Faculty first, Faculty second){
+	if (first.getID() < second.getID()){
+		return true;
+	} else if (first.getID() == second.getID()){
+		if (first.getLastName() < second.getLastName()){
+			return true;
+		} else if(first.getLastName() == second.getLastName()){
+			if (first.getFirstName() < second.getFirstName()){
+				return true;
+			} else if (first.getFirstName() == second.getFirstName()){
+				if (first.getDepartment() < second.getDepartment()){
+					return true;
+				} else if (first.getDepartment() == second.getDepartment()){
+					if (first.getAddress() < second.getAddress()){
+						return true;
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+bool operator>(Faculty first, Faculty second){
+	if (first.getID() > second.getID()){
+		return true;
+	} else if (first.getID() == second.getID()){
+		if (first.getLastName() > second.getLastName()){
+			return true;
+		} else if(first.getLastName() == second.getLastName()){
+			if (first.getFirstName() > second.getFirstName()){
+				return true;
+			} else if (first.getFirstName() == second.getFirstName()){
+				if (first.getDepartment() > second.getDepartment()){
+					return true;
+				} else if (first.getDepartment() == second.getDepartment()){
+					if (first.getAddress() > second.getAddress()){
+						return true;
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+bool operator<=(Faculty first, Faculty second){
+	return (first < second) || (first == second);
 };
 
+bool operator>=(Faculty first, Faculty second){
+	return (first > second) || (first == second);
+};
+
+//Student Operator Overloading
+bool operator!=(Student first, Student second){
+	return first.getID() != second.getID() || first.getFirstName() != second.getFirstName() || first.getLastName() != second.getLastName()
+		|| first.getAddress() != second.getAddress() || first.getCity() != second.getCity() 
+		|| first.getState() != second.getState() || first.getZip() != second.getZip() 
+		|| first.getNumber() != second.getNumber() || first.getEmail() != second.getEmail();
+}
+
+bool operator==(Student first, Student second){
+	return first.getID() == second.getID() && first.getFirstName() == second.getFirstName() && first.getLastName() == second.getLastName()
+		&& first.getAddress() == second.getAddress() && first.getCity() == second.getCity() 
+		&& first.getState() == second.getState() && first.getZip() == second.getZip() 
+		&& first.getNumber() == second.getNumber() && first.getEmail() == second.getEmail();
+}
+
+bool operator<(Student first, Student second){
+	if (first.getID() < second.getID()){
+		return true;
+	} else if (first.getID() == second.getID()){
+		if (first.getLastName() < second.getLastName()){
+			return true;
+		} else if(first.getLastName() == second.getLastName()){
+			if (first.getFirstName() < second.getFirstName()){
+				return true;
+			} else if (first.getFirstName() == second.getFirstName()){
+				if (first.getAddress() < second.getAddress()){
+					return true;
+				} else if (first.getAddress() == second.getAddress()){
+					if (first.getCity() < second.getCity()){
+						return true;
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+bool operator>(Student first, Student second){
+	if (first.getID() > second.getID()){
+		return true;
+	} else if (first.getID() == second.getID()){
+		if (first.getLastName() > second.getLastName()){
+			return true;
+		} else if(first.getLastName() == second.getLastName()){
+			if (first.getFirstName() > second.getFirstName()){
+				return true;
+			} else if (first.getFirstName() == second.getFirstName()){
+				if (first.getAddress() > second.getAddress()){
+					return true;
+				} else if (first.getAddress() == second.getAddress()){
+					if (first.getCity() > second.getCity()){
+						return true;
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+bool operator<=(Student first, Student second){
+	return (first < second) || (first == second);
+};
+
+bool operator>=(Student first, Student second){
+	return (first > second) || (first == second);
+};
+
+//Course Operator Overloading
+bool operator!=(Course first, Course second){
+	return first.getTerm() != second.getTerm() || first.getYear() != second.getYear() || first.getName() != second.getName()
+		|| first.getSectionName() != second.getSectionName() || first.getSectionNumber() != second.getSectionNumber()
+		|| first.getLocation() != second.getLocation() || first.getCredit() != second.getCredit()
+		|| first.getStartDate() != second.getStartDate() || first.getEndDate() != second.getEndDate() || first.getFaculty() != second.getFaculty()
+		|| first.getOccurrence() != second.getOccurrence() || first.getPlatform() != second.getPlatform();
+}
+
 bool operator==(Course first, Course second){
-		//Add dates + faculty class
 		return first.getTerm() == second.getTerm() && first.getYear() == second.getYear() && first.getName() == second.getName()
 		&& first.getSectionName() == second.getSectionName() && first.getSectionNumber() == second.getSectionNumber()
 		&& first.getLocation() == second.getLocation() && first.getCredit() == second.getCredit() 
+		&& first.getStartDate() == second.getStartDate() && first.getEndDate() == second.getEndDate() && first.getFaculty() == second.getFaculty()
 		&& first.getOccurrence() == second.getOccurrence() && first.getPlatform() == second.getPlatform();
+}
+
+
+bool operator<(Course first, Course second){
+	if (first.getName() < second.getName()){
+		return true;
+	} else if (first.getName() == second.getName()){
+		if (first.getYear() < second.getYear()){
+			return true;
+		} else if(first.getYear() == second.getYear()){
+			if (first.getTerm() < second.getTerm()){
+				return true;
+			} else if (first.getTerm() == second.getTerm()){
+				if (first.getSectionName() < second.getSectionName()){
+					return true;
+				} else if (first.getSectionName() == second.getSectionName()){
+					if (first.getSectionNumber() < second.getSectionNumber()){
+						return true;
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+bool operator>(Course first, Course second){
+	if (first.getName() > second.getName()){
+		return true;
+	} else if (first.getName() == second.getName()){
+		if (first.getYear() > second.getYear()){
+			return true;
+		} else if(first.getYear() == second.getYear()){
+			if (first.getTerm() > second.getTerm()){
+				return true;
+			} else if (first.getTerm() == second.getTerm()){
+				if (first.getSectionName() > second.getSectionName()){
+					return true;
+				} else if (first.getSectionName() == second.getSectionName()){
+					if (first.getSectionNumber() > second.getSectionNumber()){
+						return true;
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+bool operator<=(Course first, Course second){
+	return (first < second) || (first == second);
+};
+
+bool operator>=(Course first, Course second){
+	return (first > second) || (first == second);
 };
 
 bool MyCanvas::doLogin() const {
@@ -235,35 +494,23 @@ bool MyCanvas::doLogin() const {
 }
 
 void MyCanvas::doMenu() {
-	// todo
 	MainMenu mainMenu;
 
 	char j;
 	initFacultyData();
 	initCourseData();
-	//initStudentData();
+	initStudentData();
 
 	enum MENU_OPTION { HOME='1', ANNOUNCE='2', ASSIGN='3',  DISCUSS='4', GRADES='5', QUIZ='6', PEOPLE='7', EXIT='x' };
 	int i = 0;
 	do {
+		cout << "Course List (first greater than or equal to second): " << (*(courseList->at(0)) <= *(courseList->at(1))) << endl;
+		cout << "Faculty List (first less than or equal to second): " <<(*(faculty->at(0)) >= *(faculty->at(1))) << endl;
+		cout << "Student List (first greater than or equal to second): " <<(*(studentList->at(0)) <= *(studentList->at(1))) << endl;
 		j = mainMenu.getInput();
-		//cout << i << endl;
-		//cout << (*(courseList->at(0)) == *(courseList->at(1))) << endl;
-	
 		switch (j) {
-			case HOME: // todo enum
-				//mainMenu.doHome();
+			case HOME: 
 				cout << "Home " << endl;
-				/*vector<Course*>::iterator iter;
-				for(iter = courseList->begin(); iter != courseList->end(); iter++) 
-				{
-					cout << *(iter) << endl;
-				}
-				for (int i = 0; i < courseList->size(); i++){
-					cout << *(courseList[i]) << endl;
-				}*/
-				//cout << courseList[1] << endl;
-				//cout << courseList[0] == courseList[1] << end;
 				break;
 			case ANNOUNCE:
 				//mainMenu.doAnnounce();
@@ -288,9 +535,6 @@ void MyCanvas::doMenu() {
 			case PEOPLE:
 				//mainMenu.doPeople();
 				cout << "People " << endl;
-				for (int i = 0; i < studentList->size(); i++){
-					//cout << studentList->get(i) << endl;
-				}
 				break;
 			case EXIT:
 				cout << "Logged out." << endl;
