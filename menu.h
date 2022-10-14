@@ -8,8 +8,9 @@
 
  * Description: Template file
  *******************************************************/
-#pragma once
-
+//#pragma once
+#ifndef MENU_H
+#define MENU_H
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -47,8 +48,10 @@ public:
      * 
      */
     void display() const;
+    char getOption() const;
 
 private:
     string name;
     vector<string> options;
 };
+#endif 

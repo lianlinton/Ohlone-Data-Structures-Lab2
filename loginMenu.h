@@ -16,38 +16,15 @@ using namespace std;
 
 const string USERS = "users.csv";
 
+enum LOGIN_MENU_OPTION { LOGIN='1', CREATE='2', RESET='3', EXIT='x' };
+
 class LoginMenu : public Menu {
 
 public: 
-	//Constructor
 	LoginMenu();
-	/**
-	 * Validates the user login
-	 * 
-	 * @return true: if user credentials are correct
-	 * @return false if user credentials are incorrect
-	 */
 	bool doLogin();
-	/**
-	 * Create a new login
-	 * 
-	 * @return true: if passwords match
-	 * @return false: if passwords don't match or account creation was unsuccessful
-	 */
-	bool createLogin();
-	/**
-	 * Identified correct username and reset password
-	 * 
-	 * @return true: password was correctly reset 
-	 * @return false: operation was unsuccesful
-	 */
-	bool resetPassword();
-	/**
-	 * returns user input in the form of a character
-	 * 
-	 * @return input 
-	 */
-	char getInput() const;
+	void doCreate();
+	void doReset();
 
 private:
 	Login login;
@@ -55,5 +32,4 @@ private:
 
 	void initUserData();
 	bool authenticate();
-
 };

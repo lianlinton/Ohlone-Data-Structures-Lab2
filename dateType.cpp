@@ -1,14 +1,3 @@
-/*******************************************************
-
- * Program Name: Lab 3 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 1, 2022
-
- * Description: Template File
-
- *******************************************************/
 //Implementation file for DateType and DateTime
 #include "dateType.h"
 #include "dateTime.h"
@@ -49,7 +38,8 @@ string DateType::getDate() const{
 
 /*******************************************************************/
 //Constructor - also calls DateType's parameterized constructor
-DateTime::DateTime(int h, int mi, int s, int mo, int d, int y):DateType(mo,d,y){
+DateTime::DateTime(int h, int mi, int s, int mo, int d, int y)
+	: DateType(mo,d,y){
 	hr = h;
 	min = mi;
 	sec = s;

@@ -38,14 +38,18 @@ class MyCanvas {
 			delete studentList;
 			delete faculty;
 		};
-		//Handles Login Menu
+		/*//Handles Login Menu
 		bool doLogin() const;
 		//Handles Main Menu
 		void doMenu();
 		//Loads Course Data
 		void initCourseData();
 		void initFacultyData();
-		void initStudentData();
+		void initStudentData();*/
+
+		bool doLogin() const;
+		void doCourseMenu() const;
+		void doMenu() const;
 
 	private:
 		vector<Home> home;

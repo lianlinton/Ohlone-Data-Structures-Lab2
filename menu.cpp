@@ -8,6 +8,7 @@
 
  * Description: Template file
  *******************************************************/
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -32,6 +33,13 @@ void Menu::display() const {
         cout << options[i] << endl;
     }
     cout << "\nEnter choice: ";
+}
+
+char Menu::getOption() const {
+    char input;
+    display();
+    cin >> input;
+    return input;
 }
 
 int Menu::getInput() const {

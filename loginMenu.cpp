@@ -34,7 +34,7 @@ LoginMenu::LoginMenu()
 
 void LoginMenu::initUserData() {
 	ifstream inFile;
-	inFile.open("users.csv");
+	inFile.open(USERS);
 
 	string  username;
 	string  password;
@@ -49,6 +49,7 @@ void LoginMenu::initUserData() {
 		getline(ss, loginDateTime, ',');
 		getline(ss, logoutDateTime, ',');
 		Login _login;
+		//Login* login = new Login();
 		_login.setUserName(username);
 		_login.setPassword(password);
 
@@ -58,51 +59,9 @@ void LoginMenu::initUserData() {
 	inFile.close();
 }
 
-bool LoginMenu::createLogin(){
-	//ofstream outFile;
-	//outFile.open("users.csv");
-	Login _account;
-	string username, password, rePassword;
-	cout << "Username: ";
-	cin >> username;
-	cout << "Password: ";
-	cin >> password;
-	cout << "Enter Password Again: ";
-	cin >> rePassword;
-	if (rePassword == password){
-		_account.setUserName(username);
-		_account.setPassword(password);
-		users.push_back(_account);
-		time_t t = std::time(0);
-		tm* now = std::localtime(&t);
-		return true;
-	} else {
-		cout << "Password entries do not match." << endl;
-		return false;
-	}
-}
-
-bool LoginMenu::resetPassword(){
-	string username;
-	cout << "Username: ";
-	cin >> username;
-	for (int i = 0; i < users.size(); i++){
-		if (users.at(i).getUserName() == username){
-			string password;
-			cout << "User: "+users.at(i).getUserName() << endl;
-			cout << "New Password: ";
-			cin >> password;
-			users.at(i).setPassword(password);
-			return true;
-		}
-	}
-	cout << "User not found." << endl;
-	return false;
-}
-
 bool LoginMenu::authenticate() {
 	bool valid = false;
-	for (int i = 0; i < users.size(); i++) {
+	for (int i = 0; i < (int) users.size(); i++) {
 		if (login.getUserName() == users.at(i).getUserName() &&
 			login.getPassword() == users.at(i).getPassword()) {
 			valid = true;
@@ -110,16 +69,6 @@ bool LoginMenu::authenticate() {
 		}
 	}
 	return valid;
-}
-
-char LoginMenu::getInput() const{
-	/*char option = Menu::getInput();
-	return option;*/
-
-	char input;
-    Menu::display();
-    cin >> input;
-    return input;
 }
 
 bool LoginMenu::doLogin() {
@@ -139,3 +88,13 @@ bool LoginMenu::doLogin() {
 	} while (++attempt < 3);
 	return false;
 }
+
+void LoginMenu::doCreate() {
+
+}
+
+
+void LoginMenu::doReset() {
+
+}
+

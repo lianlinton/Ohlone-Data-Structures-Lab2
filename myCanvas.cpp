@@ -11,6 +11,7 @@
 #include "myCanvas.h"
 #include "loginMenu.cpp"
 #include "mainMenu.cpp"
+#include "courseMenu.cpp"
 #include <typeinfo>
 #include <string>
 #include <vector>
@@ -20,7 +21,87 @@
 #include <typeinfo>
 
 using namespace std;
+MyCanvas::MyCanvas() {
+}
 
+
+bool MyCanvas::doLogin() const {
+	LoginMenu login;
+	char option = login.getOption();
+	switch (option) {
+		case LOGIN_MENU_OPTION::LOGIN:
+			return login.doLogin();
+		case LOGIN_MENU_OPTION::CREATE:
+			login.doCreate();
+			break;
+		case LOGIN_MENU_OPTION::RESET:
+			login.doReset();
+			break;
+		case LOGIN_MENU_OPTION::EXIT:
+			cout << "Exiting Login Menu" << endl;
+			return false;
+		default: {}
+	}
+
+	return false;
+}
+
+void MyCanvas::doCourseMenu() const {
+	CourseMenu courseMenu;
+	char option = EXIT;
+	do {
+		//char option = courseMenu.getOption();
+
+		if (option == COURSE_MENU_OPTION::COURSE_LIST) {
+			courseMenu.doList();
+		}
+		else if (option == COURSE_MENU_OPTION::COURSE_VIEW) {
+			courseMenu.doView();
+		}
+		else if (option == COURSE_MENU_OPTION::COURSE_ADD) {
+			courseMenu.doAdd();
+		}
+		else if (option == COURSE_MENU_OPTION::COURSE_EDIT) {
+			courseMenu.doEdit();
+		}
+		else if (option == COURSE_MENU_OPTION::COURSE_DELETE) {
+			courseMenu.doDelete();
+		}
+		else if (option == COURSE_MENU_OPTION::COURSE_EXIT) {
+			cout << "Exiting Course Menu" << endl;
+		}
+	} while (option != EXIT);
+
+}
+
+void MyCanvas::doMenu() const {
+	// todo
+	MainMenu mainMenu;
+	MAIN_MENU_OPTION option = (MAIN_MENU_OPTION) mainMenu.getOption();
+
+	if (option == MAIN_MENU_OPTION::MAIN_MENU_HOME){
+		//mainMenu.doHome();
+	}
+	else if (option == MAIN_MENU_OPTION::MAIN_MENU_ANNOUNCEMENT) {
+		//mainMenu.doAnnouncement();
+	}
+	else if (option == MAIN_MENU_OPTION::MAIN_MENU_DISCUSSION) {
+		//mainMenu.doDiscussion();
+	}
+	else if (option == MAIN_MENU_OPTION::MAIN_MENU_ASSIGNMENT) {
+		//mainMenu.doAssignment();
+	}
+	else if (option == MAIN_MENU_OPTION::MAIN_MENU_QUIZ) {
+		//mainMenu.doQuiz();
+	}
+	else if (option == MAIN_MENU_OPTION::MAIN_MENU_STUDENT) {
+		//mainMenu.doStudentMenu();
+	}
+	else if (option == MAIN_MENU_OPTION::MAIN_MENU_SYLLABUS) {
+
+	} // else EXIT
+}
+/*
 //Constructor
 MyCanvas::MyCanvas() {
 	Course *pCourse = new Course;
@@ -33,6 +114,7 @@ MyCanvas::MyCanvas() {
 	courseList = new vector<Course*>();
 	studentList = new vector<Student*>();
 }
+
 
 //Loading Faculty Data
 void MyCanvas::initFacultyData() {
@@ -547,3 +629,4 @@ void MyCanvas::doMenu() {
 	return;
 }
 
+*/

@@ -25,21 +25,18 @@
 
 using namespace std;
 
-// TODO: enum MENU_OPTION { LOGIN='1', CREATE='2', RESET='3', EXIT='x' };
+enum MAIN_MENU_OPTION {
+	MAIN_MENU_HOME='1', 
+	MAIN_MENU_ANNOUNCEMENT='2',
+	MAIN_MENU_DISCUSSION='3',
+	MAIN_MENU_ASSIGNMENT = '4',
+	MAIN_MENU_QUIZ = '5',
+	MAIN_MENU_GRADE = '6',
+	MAIN_MENU_SYLLABUS = '7',
+	MAIN_MENU_STUDENT = '8',
+	MAIN_MENU_EXIT='x' };
 
 class MainMenu : public Menu {
 public:
 	MainMenu();
-	//returns user input in the form of a character
-	char getInput() const;
-	/*
-	To be determined...
-	void doHome();
-	void doAnnounce();
-	void doDiscuss();
-	void doAssign();
-	void doGrades();
-	void doQuiz();
-	void doPeople();*/
 };
-

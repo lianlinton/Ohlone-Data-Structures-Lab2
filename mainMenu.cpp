@@ -61,13 +61,3 @@ void MainMenu::doPeople(){
     cout << student.getName() << endl;
 }
 */
-
-char MainMenu::getInput() const{
-	/*char option = Menu::getInput();
-	return option;*/
-
-	char input;
-    Menu::display();
-    cin >> input;
-    return input;
-}
