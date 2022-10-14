@@ -105,8 +105,8 @@ void OrderedArrayListType<elemType>::insertEnd(const elemType& insertItem)
         cout << "Cannot insert in a full list." << endl;
     else
     {
-        cout << "This is a sorted list. Inserting at the proper "
-             << "place." << endl;
+        //cout << "This is a sorted list. Inserting at the proper "
+        //     << "place." << endl;
         insert(insertItem);
     }
 } //end insertEnd
