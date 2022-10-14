@@ -30,11 +30,17 @@ class Faculty : public Person {
 			this->department = department;
 		};
 
-		friend ostream& operator<<(ostream& out, Faculty a){
+		/*friend ostream& operator<<(ostream& out, Faculty a){
 			out << a.getFirstName() << " " << a.getLastName() << "("
 				<< a.getDepartment() << " ";
 			return out;
-		};
+		};*/
+
+		void printFacultyInfo(){
+			cout << "Faculty: " << firstName << " " << lastName << endl;
+			cout << "ID: " << id <<  "Department: " << department << endl;
+			cout << "Address: " << address << endl;
+		}
 
 	
 	private: 

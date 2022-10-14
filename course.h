@@ -100,6 +100,15 @@ class Course {
 		string getOccurrence() const{
 			return this->occurrence;
 		};
+		void printCourseInfo() const{
+			cout << endl;
+			//Spring,2022,12/24/2022,5/12/2023,Assembly Programming,CS-118-03,068589,M,On-Campus,Fremont,Sha,3
+			cout << "Name: " << name << ", Faculty: " << faculty.getLastName() << endl;
+			cout << "Section Name: " << sectionName << ", Section Number: " << sectionNumber << endl;
+			cout << "Term: " << term << ", Year: " << year << endl;
+			cout << "Start Date: " << startDate.getDate() << ", End Date: " << endDate.getDate() << endl;
+			cout << endl;
+		}
 
 
 	private: 

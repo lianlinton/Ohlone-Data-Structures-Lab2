@@ -50,6 +50,8 @@ class MyCanvas {
 
 		bool doLogin() const;
 		void doCourseMenu() const;
+		void doStudentMenu() const;
+		void doFacultyMenu() const;
 		void doMenu() const;
 
 	private:

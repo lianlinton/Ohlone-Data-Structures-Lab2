@@ -12,6 +12,8 @@
 #include "loginMenu.cpp"
 #include "mainMenu.cpp"
 #include "courseMenu.cpp"
+#include "studentMenu.cpp"
+#include "facultyMenu.cpp"
 #include <typeinfo>
 #include <string>
 #include <vector>
@@ -48,31 +50,92 @@ bool MyCanvas::doLogin() const {
 void MyCanvas::doCourseMenu() const {
 	CourseMenu courseMenu;
 	char option = EXIT;
+	//cout << "We've reached here!" << endl;
 	do {
-		//char option = courseMenu.getOption();
+		option = courseMenu.getOption();
 
 		if (option == COURSE_MENU_OPTION::COURSE_LIST) {
-//			courseMenu.doList();
+			courseMenu.doList();
 		}
 		else if (option == COURSE_MENU_OPTION::COURSE_VIEW) {
-//			courseMenu.doView();
+			courseMenu.doView();
 		}
 		else if (option == COURSE_MENU_OPTION::COURSE_ADD) {
-//			courseMenu.doAdd();
+			courseMenu.doAdd();
 		}
 		else if (option == COURSE_MENU_OPTION::COURSE_EDIT) {
-//			courseMenu.doEdit();
+			courseMenu.doEdit();
 		}
 		else if (option == COURSE_MENU_OPTION::COURSE_DELETE) {
-//			courseMenu.doDelete();
+			courseMenu.doDelete();
 		}
 		else if (option == COURSE_MENU_OPTION::COURSE_EXIT) {
 			cout << "Exiting Course Menu" << endl;
+			option = EXIT;
 		}
 	} while (option != EXIT);
 
 }
 
+void MyCanvas::doStudentMenu() const {
+	StudentMenu student;
+	char option = EXIT;
+	do {
+		option = student.getOption();
+		//STUDENT_MENU_OPTION { STUDENT_LIST = '1', STUDENT_VIEW = '2', STUDENT_ADD = '3', STUDENT_EDIT = '4', STUDENT_DELETE = '5', STUDENT_EXIT = '6'};
+
+		if (option == STUDENT_MENU_OPTION::STUDENT_LIST) {
+			student.doList();
+		}
+		else if (option == STUDENT_MENU_OPTION::STUDENT_VIEW) {
+			student.doView();
+		}
+		else if (option == STUDENT_MENU_OPTION::STUDENT_ADD) {
+			student.doAdd();
+		}
+		else if (option == STUDENT_MENU_OPTION::STUDENT_EDIT) {
+			student.doEdit();
+		}
+		else if (option == STUDENT_MENU_OPTION::STUDENT_DELETE) {
+			student.doDelete();
+		}
+		else if (option == STUDENT_MENU_OPTION::STUDENT_EXIT) {
+			cout << "Exiting Student Menu" << endl;
+			option = EXIT;
+		}
+	} while (option != EXIT);
+
+}
+
+void MyCanvas::doFacultyMenu() const {
+	FacultyMenu faculty;
+	char option = EXIT;
+	do {
+		option = faculty.getOption();
+		//STUDENT_MENU_OPTION { STUDENT_LIST = '1', STUDENT_VIEW = '2', STUDENT_ADD = '3', STUDENT_EDIT = '4', STUDENT_DELETE = '5', STUDENT_EXIT = '6'};
+
+		if (option == FACULTY_MENU_OPTION::FACULTY_LIST) {
+			faculty.doList();
+		}
+		else if (option == FACULTY_MENU_OPTION::FACULTY_VIEW) {
+			faculty.doView();
+		}
+		else if (option == FACULTY_MENU_OPTION::FACULTY_ADD) {
+			faculty.doAdd();
+		}
+		else if (option == FACULTY_MENU_OPTION::FACULTY_EDIT) {
+			faculty.doEdit();
+		}
+		else if (option == FACULTY_MENU_OPTION::FACULTY_DELETE) {
+			faculty.doDelete();
+		}
+		else if (option == FACULTY_MENU_OPTION::FACULTY_EXIT) {
+			cout << "Exiting Student Menu" << endl;
+			option = EXIT;
+		}
+	} while (option != EXIT);
+
+}
 void MyCanvas::doMenu() const {
 	// todo
 	MainMenu mainMenu;

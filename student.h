@@ -25,6 +25,12 @@ class Student : public Person {
 			this->id = id;
 		};
 
+		void printStudentInfo(){
+			cout << "Student: " << firstName << " " << lastName << endl;
+			cout << "ID: " << id << endl;
+			cout << "Address: " << address << endl;
+		}
+
 	private: 
 		int id;
 

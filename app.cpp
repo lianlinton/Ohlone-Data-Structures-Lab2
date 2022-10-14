@@ -19,9 +19,10 @@ int main(){
 
 	MyCanvas myCanvas;
 	if (myCanvas.doLogin()){
-		//myCanvas.doCourseMenu();
-		//myCanvas.doStudentMenu();
-		//myCanvas.doFacultyMenu();
+	//if (true){
+		myCanvas.doCourseMenu();
+		myCanvas.doStudentMenu();
+		myCanvas.doFacultyMenu();
 		myCanvas.doMenu();
 	}
 	myCanvas.doMenu();

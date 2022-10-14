@@ -7,6 +7,15 @@
         "iosfwd": "cpp",
         "ostream": "cpp",
         "vector": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "fstream": "cpp",
+        "istream": "cpp",
+        "__split_buffer": "cpp",
+        "deque": "cpp",
+        "sstream": "cpp",
+        "__hash_table": "cpp",
+        "algorithm": "cpp",
+        "filesystem": "cpp",
+        "locale": "cpp"
     }
 }
