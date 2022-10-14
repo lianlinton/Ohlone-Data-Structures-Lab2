@@ -14,11 +14,11 @@ class CourseMenu : public Menu {
     public:
         CourseMenu();
         ~CourseMenu();
-        void doList();
-        void doView();
-        void doAdd();
-        void doEdit();
-        void doDelete();
+//        void doList();
+//        void doView();
+//        void doAdd();
+//        void doEdit();
+//        void doDelete();
     private:
         void init();
         OrderedArrayListType<Course*> *list; //courseList

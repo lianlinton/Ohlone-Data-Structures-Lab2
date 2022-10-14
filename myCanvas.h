@@ -23,6 +23,7 @@
 #include "course.h"
 #include "faculty.h"
 #include "myOhlone.h"
+#include "courseMenu.h"
 
 using namespace std;
 

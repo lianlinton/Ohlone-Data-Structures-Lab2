@@ -42,7 +42,6 @@ bool MyCanvas::doLogin() const {
 			return false;
 		default: {}
 	}
-
 	return false;
 }
 
@@ -53,19 +52,19 @@ void MyCanvas::doCourseMenu() const {
 		//char option = courseMenu.getOption();
 
 		if (option == COURSE_MENU_OPTION::COURSE_LIST) {
-			courseMenu.doList();
+//			courseMenu.doList();
 		}
 		else if (option == COURSE_MENU_OPTION::COURSE_VIEW) {
-			courseMenu.doView();
+//			courseMenu.doView();
 		}
 		else if (option == COURSE_MENU_OPTION::COURSE_ADD) {
-			courseMenu.doAdd();
+//			courseMenu.doAdd();
 		}
 		else if (option == COURSE_MENU_OPTION::COURSE_EDIT) {
-			courseMenu.doEdit();
+//			courseMenu.doEdit();
 		}
 		else if (option == COURSE_MENU_OPTION::COURSE_DELETE) {
-			courseMenu.doDelete();
+//			courseMenu.doDelete();
 		}
 		else if (option == COURSE_MENU_OPTION::COURSE_EXIT) {
 			cout << "Exiting Course Menu" << endl;

@@ -9,6 +9,7 @@
 #include <sstream>
 
 CourseMenu:: CourseMenu() : Menu("Course Menu"){
+// CourseMenu:: CourseMenu() : Menu("Course Menu"){
 	addOption("1) Select a course");
 	init();
 	list = new OrderedArrayListType<Course*>();
