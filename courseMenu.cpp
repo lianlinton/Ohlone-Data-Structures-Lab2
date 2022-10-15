@@ -1,3 +1,15 @@
+/*******************************************************
+
+ * Program Name: Lab 4 Project
+
+ * Author: Lian Elsa Linton
+
+ * Date: October 14, 2022
+
+ * Description: The Course Menu class represents the different functionalities in the Course Section. 
+
+ *******************************************************/
+
 #include "menu.h"
 #include "courseMenu.h"
 #include "dateType.h"
@@ -8,6 +20,7 @@
 #include <fstream>
 #include <sstream>
 
+//Initialize Course Menu with Menu object and list
 CourseMenu:: CourseMenu() : Menu("Course Menu"){
 	addOption("1) Select a course");
 	addOption("2) View course details");
@@ -20,6 +33,7 @@ CourseMenu:: CourseMenu() : Menu("Course Menu"){
 	init();
 }
 
+//Destructor: Delete all elements in list
 CourseMenu::~CourseMenu(){
 	for (int i = 0; i < (int) list->listSize(); i++){
 		Course *p;
@@ -29,6 +43,7 @@ CourseMenu::~CourseMenu(){
 	delete list;
 }
 
+//Load all course data information
 void CourseMenu::init(){
     ifstream inFile;
 	inFile.open("course_data.csv");
@@ -92,10 +107,10 @@ void CourseMenu::init(){
 		//cout << "Counter:" << counter << endl;
 		counter++;
 	}
-	inFile.close();
-    //list insert->  
+	inFile.close(); 
 }
 
+//Display list of courses
 void CourseMenu::doList(){
 	//cout << "Here!!!" << endl;
 	Menu c("List of Courses");
@@ -113,6 +128,7 @@ void CourseMenu::doList(){
 	pCourse = p;
 }
 
+//View course information of selected course
 void CourseMenu:: doView(){
 	if (pCourse == nullptr){
 		doList();
@@ -120,6 +136,7 @@ void CourseMenu:: doView(){
 	pCourse->printCourseInfo();
 }
 
+//Edit term information of selected course
 void CourseMenu::doEdit(){
 	if (pCourse == nullptr){
 		doList();
@@ -135,6 +152,7 @@ void CourseMenu::doEdit(){
 	p->printCourseInfo();
 }
 
+//Add a new course to the list
 void CourseMenu::doAdd(){
 	string term;        // Fall
 	string year;            // 2022
@@ -203,6 +221,7 @@ void CourseMenu::doAdd(){
 	pCourse = _course;
 }
 
+//Delete a course from the list 
 void CourseMenu::doDelete(){
 	if (pCourse == nullptr){
 		doList();

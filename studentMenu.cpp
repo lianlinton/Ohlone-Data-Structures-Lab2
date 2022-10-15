@@ -1,3 +1,14 @@
+/*******************************************************
+
+ * Program Name: Lab 4 Project
+
+ * Author: Lian Elsa Linton
+
+ * Date: October 14, 2022
+
+ * Description: The Student Menu class represents the different functionalities in the Student Section. 
+
+ *******************************************************/
 #include "menu.h"
 #include "studentMenu.h"
 #include "dateType.h"
@@ -8,6 +19,7 @@
 #include <fstream>
 #include <sstream>
 
+//Initialized studentMenu object and laod data
 StudentMenu:: StudentMenu() : Menu("Student Menu"){
 	addOption("1) Select a student");
 	addOption("2) View student details");
@@ -20,6 +32,7 @@ StudentMenu:: StudentMenu() : Menu("Student Menu"){
 	init();
 }
 
+//Destructor: Delete elements of list
 StudentMenu::~StudentMenu(){
 	for (int i = 0; i < (int) list->listSize(); i++){
 		Student *p;
@@ -29,6 +42,7 @@ StudentMenu::~StudentMenu(){
 	delete list;
 }
 
+//Load student information of file 
 void StudentMenu::init(){
     ifstream inFile;
 	inFile.open(STUDENT_DATA);
@@ -72,6 +86,7 @@ void StudentMenu::init(){
 	inFile.close();
 }
 
+//Display students in the list
 void StudentMenu::doList(){
 	//cout << "Here!!!" << endl;
 	Menu c("List of Students");
@@ -88,6 +103,7 @@ void StudentMenu::doList(){
 	pStudent = p;
 }
 
+//View student information of the selected student
 void StudentMenu::doView(){
 	if (pStudent == nullptr){
 		doList();
@@ -95,6 +111,7 @@ void StudentMenu::doView(){
 	pStudent->printStudentInfo();
 }
 
+//Edit student address of the selected student
 void StudentMenu::doEdit(){
 	if (pStudent == nullptr){
 		doList();
@@ -110,6 +127,7 @@ void StudentMenu::doEdit(){
 	p->printStudentInfo();
 }
 
+//Add student to the list
 void StudentMenu::doAdd(){
     string id;
 	string firstName; 
@@ -160,6 +178,7 @@ void StudentMenu::doAdd(){
     pStudent = _student;
 }
 
+//delete selected student from the list
 void StudentMenu::doDelete(){
 	if (pStudent == nullptr){
 		doList();

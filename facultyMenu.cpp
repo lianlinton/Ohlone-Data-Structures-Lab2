@@ -1,3 +1,15 @@
+/*******************************************************
+
+ * Program Name: Lab 4 Project
+
+ * Author: Lian Elsa Linton
+
+ * Date: October 14, 2022
+
+ * Description: The Faculty Menu class represents the different functionalities in the Faculty Section. 
+
+ *******************************************************/
+
 #include "menu.h"
 #include "facultyMenu.h"
 #include "faculty.h"
@@ -9,6 +21,7 @@
 #include <fstream>
 #include <sstream>
 
+//Initializes Faculty Menu object and loads data
 FacultyMenu:: FacultyMenu() : Menu("Faculty Menu"){
 	addOption("1) Select a faculty");
 	addOption("2) View faculty details");
@@ -21,6 +34,7 @@ FacultyMenu:: FacultyMenu() : Menu("Faculty Menu"){
 	init();
 }
 
+//Destructor: Deletes elements of the list
 FacultyMenu::~FacultyMenu(){
 	for (int i = 0; i < (int) list->listSize(); i++){
 		Faculty *p;
@@ -30,6 +44,7 @@ FacultyMenu::~FacultyMenu(){
 	delete list;
 }
 
+//Loads faculty information from the file
 void FacultyMenu::init(){
     ifstream inFile;
 	inFile.open(FACULTY_DATA);
@@ -75,6 +90,7 @@ void FacultyMenu::init(){
 	inFile.close();
 }
 
+//Shows all the faculty objects in the list
 void FacultyMenu::doList(){
 	//cout << "Here!!!" << endl;
 	Menu c("List of Faculty");
@@ -91,6 +107,7 @@ void FacultyMenu::doList(){
 	pFaculty = p;
 }
 
+//View the information of the selected faculty 
 void FacultyMenu::doView(){
 	if (pFaculty == nullptr){
 		doList();
@@ -98,6 +115,7 @@ void FacultyMenu::doView(){
 	pFaculty->printFacultyInfo();
 }
 
+//Edit the address information of the selected faculty 
 void FacultyMenu::doEdit(){
 	if (pFaculty == nullptr){
 		doList();
@@ -113,6 +131,7 @@ void FacultyMenu::doEdit(){
 	p->printFacultyInfo();
 }
 
+//Add a new faculty object to the list
 void FacultyMenu::doAdd(){
     string id;
 	string department;
@@ -168,6 +187,7 @@ void FacultyMenu::doAdd(){
     pFaculty = _faculty;
 }
 
+//delete the selected faculty object
 void FacultyMenu::doDelete(){
 	if (pFaculty == nullptr){
 		doList();
