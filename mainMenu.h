@@ -1,10 +1,10 @@
 /*******************************************************
 
- * Program Name: Lab 3 Project
+ * Program Name: Lab 4 Project
 
  * Author: Lian Elsa Linton
 
- * Date: October 1, 2022
+ * Date: October 14, 2022
 
  * Description: Base class is the Menu Class and identifies the user's desired goal based on user input. 
  *******************************************************/
@@ -39,4 +39,12 @@ enum MAIN_MENU_OPTION {
 class MainMenu : public Menu {
 public:
 	MainMenu();
+	/*void doHome();
+	void doAnnounce();
+	void doDiscuss();
+	void doAssign();
+	void doGrades();
+	void doQuiz();
+	void doPeople();
+	void doSyllabus();*/
 };

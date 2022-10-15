@@ -152,11 +152,13 @@ void CourseMenu::doAdd(){
 	cout << "Enter course name: ";
 	cin.ignore();
 	getline(cin, name);
+	cout << "Enter course term: ";
+	getline(cin, term);
 	cout << "Enter course year: ";
-	cin.ignore();
+	//cin.ignore();
 	getline(cin, year);
 	cout << "Enter course start date: ";
-	cin.ignore();
+	//cin.ignore();
 	getline(cin, startDate);
 	cout << "Enter course end date: ";
 	getline(cin, endDate);

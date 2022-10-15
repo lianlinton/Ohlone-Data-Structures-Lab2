@@ -125,13 +125,13 @@ void StudentMenu::doAdd(){
     cin.ignore();
     getline(cin, id);
 	cout << "Enter first name: ";
-	cin.ignore();
+	//cin.ignore();
 	getline(cin, firstName);
 	cout << "Enter last name: ";
-	cin.ignore();
+	//cin.ignore();
 	getline(cin, lastName);
 	cout << "Enter address: ";
-	cin.ignore();
+	//cin.ignore();
 	getline(cin, address);
 	cout << "Enter city: ";
 	getline(cin, city);

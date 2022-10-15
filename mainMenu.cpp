@@ -1,15 +1,18 @@
 /*******************************************************
 
- * Program Name: Lab 3 Project
+ * Program Name: Lab 4 Project
 
  * Author: Lian Elsa Linton
 
- * Date: October 1, 2022
+ * Date: October 14, 2022
 
  * Description: Helps the user navigate through Main Canvas area (Work in progress.)
  *******************************************************/
 #include "menu.h"
 #include "mainMenu.h"
+#include <iostream>
+
+using namespace std;
 
 MainMenu::MainMenu()
     : Menu("My Canvas Menu") {
@@ -23,10 +26,7 @@ MainMenu::MainMenu()
     addOption("x) Logout");
 };
 
-/*
-To be determined...
-
-void MainMenu::doHome(){
+/*void MainMenu::doHome(){
     Home home; 
     cout << home.getTitle() << endl;
 }
@@ -58,6 +58,10 @@ void MainMenu::doQuiz(){
 
 void MainMenu::doPeople(){
     Student student; 
-    cout << student.getName() << endl;
+    cout << student.getFirstName() << student.getLastName() << endl;
 }
-*/
+
+void MainMenu::doSyllabus(){
+    Syllabus syllabus; 
+    cout << syllabus.getUserTitle() << endl;
+}*/

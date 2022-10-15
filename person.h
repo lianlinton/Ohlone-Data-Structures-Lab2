@@ -1,10 +1,10 @@
 /*******************************************************
 
- * Program Name: Lab 3 Project
+ * Program Name: Lab 4 Project
 
  * Author: Lian Elsa Linton
 
- * Date: October 1, 2022
+ * Date: October 14, 2022
 
  * Description: Person base class for both Student and Faculty classes
  *******************************************************/

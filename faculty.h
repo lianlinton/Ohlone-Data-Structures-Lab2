@@ -1,10 +1,10 @@
 /*******************************************************
 
- * Program Name: Lab 3 Project
+ * Program Name: Lab 4 Project
 
  * Author: Lian Elsa Linton
 
- * Date: October 1, 2022
+ * Date: October 14, 2022
 
  * Description: Base class is Person class with specific data attached for faculty members.
  *******************************************************/
@@ -38,7 +38,7 @@ class Faculty : public Person {
 
 		void printFacultyInfo(){
 			cout << "Faculty: " << firstName << " " << lastName << endl;
-			cout << "ID: " << id <<  "Department: " << department << endl;
+			cout << "ID: " << id <<  " Department: " << department << endl;
 			cout << "Address: " << address << endl;
 		}
 
