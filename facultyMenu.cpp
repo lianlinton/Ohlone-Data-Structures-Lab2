@@ -1,63 +1,66 @@
-/*******************************************************
-
- * Program Name: Lab 4 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 14, 2022
-
- * Description: The Faculty Menu class represents the different functionalities in the Faculty Section. 
-
- *******************************************************/
-
-#include "menu.h"
-#include "facultyMenu.h"
-#include "faculty.h"
-#include "dateType.h"
-#include <typeinfo>
-#include <string>
-#include <vector>
-#include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string>
+#include "menu.cpp"
+#include "facultyType.cpp"
+#include "facultyMenu.h"
+#include "utils.cpp"
+#include "unorderedArrayListType.h"
 
-//Initializes Faculty Menu object and loads data
-FacultyMenu:: FacultyMenu() : Menu("Faculty Menu"){
-	addOption("1) Select a faculty");
-	addOption("2) View faculty details");
-	addOption("3) Add a faculty");
-	addOption("4) Edit a faculty");
-	addOption("5) Delete a faculty");
+FacultyMenu::FacultyMenu()
+    : Menu("Course Menu") {
+    addOption("1) Faculty list");   // Lab 5 - sortBy any field in class Person
+    addOption("2) View faculty contact");
+    addOption("3) Add a faculty");
+    addOption("4) Edit a faculty");
+    addOption("5) Delete a faculty");
     addOption("x) Exit");
-	list = new OrderedArrayListType<Faculty*>();
-	pFaculty = nullptr;
-	init();
+
+    list = new UnorderedArrayListType<Faculty>();
+    init();
+};
+
+FacultyMenu::~FacultyMenu() {    
+    delete list;
+    inFile.close();
 }
 
-//Destructor: Deletes elements of the list
-FacultyMenu::~FacultyMenu(){
-	for (int i = 0; i < (int) list->listSize(); i++){
-		Faculty *p;
-		list->retrieveAt(i, p);
-		i++;
-	}
-	delete list;
-}
-
-//Loads faculty information from the file
-void FacultyMenu::init(){
-    ifstream inFile;
-	inFile.open(FACULTY_DATA);
-    string id;
+void FacultyMenu::init() {
+    //string filename = "WRONG FILE";
+    string filename = FACULTY_DATA;
+    int count = 0;
+    FileException except;
+    while (true){
+        try{
+            openFile(inFile, filename);
+            if (inFile.fail()){
+                throw except;
+            }
+            break;
+        } catch (exception &e){
+            count++;
+            if (count > 3){
+                break;
+            }
+            cout << except.what() << endl;
+            cout << "Enter filename: " << endl;
+            cin >> filename;
+        }
+    }
+    
+	// sets variables for strings in course file
+	string id;
+	string firstName;
+	string lastName;
 	string department;
-	string firstName; 
-	string lastName; 
-	string address; 
-	string city; 
-	string state; 
-	string zip; 
-	string phone;
+	string address;
+	string city;
+	string state;
+	string zip;
 	string email;
+	string number;
+
+	// reads file and set variables
 	string line = "";
 	while (getline(inFile, line)) {
 		stringstream ss(line);
@@ -70,127 +73,223 @@ void FacultyMenu::init(){
 		getline(ss, state, ',');
 		getline(ss, zip, ',');
 		getline(ss, email, ',');
-		getline(ss, phone, ',');
-		//cout << phone << endl;
-		Faculty* _faculty = new Faculty();
-		int num = stoi(id);
-		_faculty->setID(id);
+		getline(ss, number, ',');
+
+		// sets variables to the faculty array 
+		Faculty f;
+		Faculty* _faculty = &f;
+		_faculty->setId(stoi(id));
 		_faculty->setFirstName(firstName);
 		_faculty->setLastName(lastName);
 		_faculty->setDepartment(department);
 		_faculty->setAddress(address);
 		_faculty->setCity(city);
 		_faculty->setState(state);
-		num = stoi(zip);
-		_faculty->setZip(num);
+		_faculty->setZip(zip);
 		_faculty->setEmail(email);
-		_faculty->setPhoneNumber(phone);
-		list->insertEnd(_faculty);
+		_faculty->setPhone(number);
+
+		list->insertEnd(*_faculty);
 	}
-	inFile.close();
+
+    inFile.clear();
+
+	list->sort(true);
 }
 
-//Shows all the faculty objects in the list
-void FacultyMenu::doList(){
-	//cout << "Here!!!" << endl;
+void FacultyMenu::doList() {
 	Menu c("List of Faculty");
-	Faculty* p;
-	int count = 1;
-	for (int i =1; i <= list->listSize(); i++){
-		list->retrieveAt(i-1,p);
-		//cout << "p Name: "<< i << p->getName() << endl;
-		c.addOption(to_string(count) + ") "+ p->getFirstName() + " " + p->getLastName() + " " + p->getID() + " Department: "+p->getDepartment());
-		count++;
+	Faculty f;
+	Faculty* p = &f;
+
+	// retrieves each element from faculty array p
+	for (int i = 1; i <= list->listSize(); i++) {
+		list->retrieveAt(i - 1, *p);
+		c.addOption(to_string(p->getId()) + " " + p->getFirstName() + " " + p->getLastName() + " " + p->getDepartment() \
+			+ " " + p->getAddress() + " " + p->getCity() + " " + p->getState() + " " + p->getZip() + " " + p->getEmail() \
+			+ " " + p->getPhone());
 	}
+
+	// user input to choose an array element
 	int input = c.getInput();
-	list->retrieveAt(input-1, p);
-	pFaculty = p;
+	list->retrieveAt(input - 1, *p);
+	this->selectedFaculty(*p);
 }
 
-//View the information of the selected faculty 
-void FacultyMenu::doView(){
-	if (pFaculty == nullptr){
+void FacultyMenu::doView() {
+	// checks if array is empty, if it is it fills it
+	if (pFaculty == nullptr) {
 		doList();
 	}
-	pFaculty->printFacultyInfo();
+
+	// prints array
+	pFaculty->print();
 }
 
-//Edit the address information of the selected faculty 
-void FacultyMenu::doEdit(){
-	if (pFaculty == nullptr){
-		doList();
-	} 
-	Faculty* p = pFaculty;
-	string temp;
-	cout << "Enter new address (" + p->getAddress() << "):";
-	cin.ignore();
-	getline(cin, temp);
-	if (!temp.empty()){
-		p->setAddress(temp);
-	}
-	p->printFacultyInfo();
-}
+void FacultyMenu::doAdd() {
+	Faculty f;
+	Faculty* p = &f;
 
-//Add a new faculty object to the list
-void FacultyMenu::doAdd(){
-    string id;
+	// sets varibles for elements for array
+	string id;
+	string firstName;
+	string lastName;
 	string department;
-	string firstName; 
-	string lastName; 
-	string address; 
-	string city; 
-	string state; 
-	string zip; 
-	string phone;
+	string address;
+	string city;
+	string state;
+	string zip;
 	string email;
+	string number;
 
-    cout << "Enter ID: ";
-    cin.ignore();
-    getline(cin, id);
-    cout << "Enter department: ";
-    //cin.ignore();
-    getline(cin, department);
-	cout << "Enter first name: ";
-	//cin.ignore();
+
+	// user prompt to enter elements of the array to add
+	cout << "Enter id: ";
+	cin >> id;
+	cout << "Enter faculty's first name: ";
+	cin.ignore();
 	getline(cin, firstName);
-	cout << "Enter last name: ";
-	//cin.ignore();
+	cout << "Enter faculty's last name: ";
+	cin.ignore();
 	getline(cin, lastName);
+	cout << "Enter department name: ";
+	getline(cin, department);
 	cout << "Enter address: ";
-	//cin.ignore();
 	getline(cin, address);
 	cout << "Enter city: ";
 	getline(cin, city);
 	cout << "Enter state: ";
-	getline(cin, state);
-	cout << "Enter zip: ";
-	getline(cin, zip);
-	cout << "Enter phone: ";
-	getline(cin, phone);
+	cin >> state;
+	cout << "Enter zip code: ";
+	cin >> zip;
 	cout << "Enter email: ";
-	getline(cin, email);
+	cin >> email;
+	cout << "Enter phone number: ";
+	cin >> number;
 
-	Faculty* _faculty = new Faculty();
-    int num = stoi(id);
-    _faculty->setID(id);
-    _faculty->setFirstName(firstName);
-    _faculty->setLastName(lastName);
-    _faculty->setDepartment(department);
-    _faculty->setAddress(address);
-    _faculty->setCity(city);
-    _faculty->setState(state);
-    num = stoi(zip);
-    _faculty->setZip(num);
-    _faculty->setEmail(email);
-    _faculty->setPhoneNumber(phone);
-    list->insertEnd(_faculty);
-    pFaculty = _faculty;
+
+	// new variables are set to the course array
+	p->setId(stoi(id));
+	p->setFirstName(firstName);
+	p->setLastName(lastName);
+	p->setDepartment(department);
+	p->setAddress(address);
+	p->setCity(city);
+	p->setState(state);
+	p->setZip(zip);
+	p->setEmail(email);
+	p->setPhone(number);
+
+	// variables are added to the array
+	list->insertEnd(*p);
 }
 
-//delete the selected faculty object
-void FacultyMenu::doDelete(){
-	if (pFaculty == nullptr){
+void FacultyMenu::doEdit() {
+	// checks if course array is empty, adds elements
+	if (pFaculty == nullptr) {
 		doList();
 	}
-	list->remove(pFaculty);
+	Faculty* p = pFaculty;
+	string temp;
+
+
+	// promts user to input new variables for each element of the course array
+	cout << "Enter new id or default (" + to_string(p->getId()) + "):";
+	getline(cin, temp);
+
+	if (!temp.empty()) {
+		p->setId(stoi(temp));
+	}
+
+	cout << "Enter new first name or default (" + p->getFirstName() + "):";
+	getline(cin, temp);
+
+	if (!temp.empty()) {
+		p->setFirstName(temp);
+	}
+
+	cout << "Enter new last name or default (" + p->getLastName() + "):";
+	getline(cin, temp);
+
+	if (!temp.empty()) {
+		p->setLastName(temp);
+	}
+
+	cout << "Enter new department name or default (" + p->getDepartment() + "):";
+	getline(cin, temp);
+
+	if (!temp.empty()) {
+		p->setDepartment(temp);
+	}
+
+	cout << "Enter new address or default (" + p->getAddress() + "):";
+	getline(cin, temp);
+
+	if (!temp.empty()) {
+		p->setAddress(temp);
+	}
+
+	cout << "Enter new city or default (" + p->getCity() + "):";
+	getline(cin, temp);
+
+	if (!temp.empty()) {
+		p->setCity(temp);
+	}
+
+	cout << "Enter new state or default (" + p->getState() + "):";
+	getline(cin, temp);
+
+	if (!temp.empty()) {
+		p->setState(temp);
+	}
+
+	cout << "Enter new zip or default (" + p->getZip() + "):";
+	getline(cin, temp);
+
+	if (!temp.empty()) {
+		p->setZip(temp);
+	}
+
+	cout << "Enter new email or default (" + p->getEmail() + "):";
+	getline(cin, temp);
+
+	if (!temp.empty()) {
+		p->setEmail(temp);
+	}
+
+	cout << "Enter new phone number or default (" + p->getPhone() + "):";
+	getline(cin, temp);
+
+	if (!temp.empty()) {
+		p->setPhone(temp);
+	}
+
+
+	// prints out editted array
+	cout << "Show faculty details: " << endl;
+	p->print();
+	cout << endl;
+}
+
+void FacultyMenu::doDelete() {
+	// checks if array is empty, fills
+	if (pFaculty == nullptr) {
+		doList();
+	}
+
+	// removes element from the array
+	list->remove(*pFaculty);
+}
+
+Faculty* FacultyMenu::find(Faculty& f) {
+	int index = list->search(f);	
+	list->retrieveAt(index, f);
+	return &f;
+}
+
+/**
+* Save to file
+*/
+void FacultyMenu::doSave() {
+	// TODO
 }

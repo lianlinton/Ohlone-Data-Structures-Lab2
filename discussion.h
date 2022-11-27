@@ -1,47 +1,57 @@
-/*******************************************************
-
- * Program Name: Lab 4 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 14, 2022
-
- * Description: Discussion class represents the Discussions section on Canvas. 
-
- *******************************************************/
 #pragma once
-#include <iostream>
-#include <iomanip>
 #include <string>
+#include "student.h"
+#include "dateTime.h"
 using namespace std;
 
-class Discussion{
-    public:
+class Discussion {
+    // TODO
+    friend ostream& operator<<(ostream&, Discussion& d);
+    friend istream& operator>>(istream& in, Discussion& d);
 
-    //Accessor Functions
-    string getTitle(){
-        return title;
-    }
-    bool getPinned(){
-        return isPinned;
-    }
-    int getResponses(){
-        return numResponses;
-    }
-    //Mutator Functions
-    void setTitle(string title){
-        this->title = title;
-    }
-    void setPinned(bool pinned){
-        this->isPinned = pinned;
-    }
-    void setResponses(int responses){
-        this->numResponses = responses;
+public:
+    Discussion();
+
+    string getText() const;
+    void setStudent(Student s) {
+        student.copy(s);
+    };
+
+    Student getStudent() const {
+        return student;
+    };
+
+    void setDateTime(string dt) {
+        postDate.setDateTime(dt);
+    };
+    void setDateTime(DateTime dt) {
+        postDate.copy(dt);
+    };
+
+    DateTime getDateTime() const {
+        return postDate;
+    };
+    void setText(string t) {
+        text = t;
     }
 
-    private:
-        string title;
-        bool isPinned;
-        int numResponses;
+    string getName() const;
+
+    void print() const;
+
+    Discussion& operator=(const Discussion& otherObject); // Lab 5
+
+    //Overloaded operators
+    bool operator>=(const Discussion&) const;
+    bool operator<=(const Discussion&) const;
+    bool operator<(const Discussion&) const;
+    bool operator>(const Discussion&) const;
+    bool operator==(const Discussion&) const;
+    bool operator!=(const Discussion&) const;
+    
+private:
+    Student student;    
+    DateTime postDate;
+    string text;
 
 };

@@ -1,92 +1,46 @@
-/*******************************************************
-
- * Program Name: Lab 4 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 14, 2022
-
- * Description: Assignment class represents the Assignments section on Canvas. 
-
- *******************************************************/
-#pragma once 
-#include <iostream>
-#include <iomanip>
+#pragma once
 #include <string>
-#include <vector>
-
+#include "dateTime.h"
 using namespace std;
 
-//Modified from Lab 1
-
 class Assignment {
-    public:
-        /**
-         * Construct a new Assignment object
-         * 
-         */
-        Assignment();
-        /**
-         * Access name of assignment
-         * 
-         * @return name
-         */
-        string getUserName(){
-            return name;
-        };
-        /**
-         * Access due date of assignment
-         * 
-         * @return due date
-         */
-        string getUserDueDate(){
-            return dueDate;
-        };
-        /**
-         * Access points of assignment
-         * 
-         * @return points
-         */
-        int getUserPoints(){
-            return points;
-        };
-        /**
-         * Set the name of assignment
-         * 
-         * @param name 
-         */
-        void setUserName(string name){
-            this->name = name;
-        };
-        /**
-         * Set the due date of assignment
-         * 
-         * @param name 
-         */
-        void setUserDueDate(string dueDate){
-            this->dueDate = dueDate;
-        };
-        /**
-         * Set the points of assignment
-         * 
-         * @param name 
-         */
-        void setUserPoints(int points){
-            this->points = points;
-        };
-        /**
-         * Display assignment information
-         * 
-         */
-        void showInfo(){
-            cout << endl;
-            cout << "Name: "+name << endl;
-            cout << "Due Date: "+dueDate << endl;
-            cout << "Points:" << points << endl;
-            cout << endl;
-        };
-    private:
-        string name;
-        string dueDate;
-        int points;
+    friend ostream& operator<<(ostream&, Assignment&);
+    friend istream& operator>>(istream& in, Assignment& a);    
+
+public:
+    Assignment();
+    void setName(string n) { name = n; };
+    void setAvailableDate(string a);
+    void setDueDate(string d);
+    void setPossiblePoint(int p) { possiblePoints = p; };
+    void setPoint(int p) { points = p; };
+    void setStatus(int s) { status = s; };
+
+    string getName() { return name; };
+    DateTime getAvailableDate() { return availableDate; };
+    DateTime getDueDate() { return dueDate; };
+    int getPossiblePoint() { return possiblePoints; };
+    int getPoint() { return points; };
+    int isCompleted() { return status == 1; };
+
+    string toCSV();
+
+    Assignment& operator=(const Assignment& other);
+    bool operator >= (const Assignment& a) const;
+    bool operator == (const Assignment& a) const;
+
+    static void printHeader();
+
+private:
+
+    string name;
+    DateTime availableDate;
+    DateTime dueDate;
+    int possiblePoints;
+    int points;
+    int status;  // 1=Yes; 0=No
+
+    string getStatus() {
+        return isCompleted() ? "DONE" : "Pending";
+    };
 };

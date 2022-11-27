@@ -1,32 +1,16 @@
-/*******************************************************
+// TODO: Student needs to provide what the program is about
 
- * Program Name: Lab 4 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 14, 2022
-
- * Description: Main class which is run and is used as the user's starting position.
- *******************************************************/
 #include <iostream>
-#include <string>
 #include "myCanvas.cpp"
 
 using namespace std;
+int main() {
+    MyCanvas myCanvas;
 
-//Main Class: User's entrypoint 
-int main(){
+    if (myCanvas.doLogin()) {
+        myCanvas.doCourseMenu();
+        myCanvas.doMainMenu();
+    }
 
-	MyCanvas myCanvas;
-	if (myCanvas.doLogin()){
-	//if (true){
-		myCanvas.doCourseMenu();
-		myCanvas.doStudentMenu();
-		myCanvas.doFacultyMenu();
-		myCanvas.doMenu();
-	}
-	myCanvas.doMenu();
-	cout << "Done everything!" << endl;
-	//myCanvas.~MyCanvas();
-	exit(0);
+    return 0;
 }

@@ -1,52 +1,46 @@
-/*******************************************************
-
- * Program Name: Lab 4 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 14, 2022
-
- * Description: Login class stores the information of one user. 
- *******************************************************/
 #pragma once
-#include <iostream>
-#include <iomanip>
 #include <string>
-#include "dateType.cpp"
+#include "dateTime.h"
 
 using namespace std;
 
 class Login {
     public:
-        Login(){
+        Login();
+        ~Login() {};
 
-        };
-        //Accessor Methods
-        void setUserName(string name) {
-            username = name;
-        };
-        void setPassword(string pass) {
-            password = pass;
-        };
-        //Mutator Methods
-        string getUserName() {
-            return username;
-        };
-        string getPassword() {
-            return password;
-        };
-        //Creates a Login object
-        void createLogin(string username, string password, DateTime loginDateTime, DateTime logoutDateTime){
-            this->username = username;
-            this->password = password;
-            this->loginDateTime = loginDateTime;
-            this->logoutDateTime = logoutDateTime;
-        };
-        void canvasLogin();
+		//Mutator member functions
+		void setUsername(string name) {
+			username = name;
+		};
+		void setPassword(string pass) {
+			password = pass;
+		};
+
+		// TODO Final Exam
+		void setLoginTime(string s);
+		void setLoginTime(DateTime& d) {
+			loginDateTime = d;
+		};
+		void setLogoutTime(string s);
+		void setLogoutTime(DateTime& d) {
+			logoutDateTime = d;
+		};
+		//
+		
+		//Accessor member functions
+		string getUsername() const { return username; };
+		string getPassword() const { return password; };
+		
+
+		//Overloaded operators
+		Login& operator=(const  Login& other);
+		bool operator>=(const Login&) const;
+		bool operator==(const Login&) const;
 
     private:
        string username;
        string password;
-       DateTime loginDateTime;
-       DateTime logoutDateTime;
+	   DateTime loginDateTime;
+	   DateTime logoutDateTime;
 };

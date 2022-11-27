@@ -1,0 +1,63 @@
+Vinson Wong
+10/08/2022 21:08:00
+What makes a certain sorting algorithm more useful to use than another?
+Tianren Chen
+10/11/2022 09:05:00
+I think efficiency algorithms make sorting algorithms more useful than anthers.
+Tianren Che
+10/11/2022 09:08:00
+What are the top 3 most important sorting algorithms in our topics? 
+Minh Anh Le
+10/11/2022 23:20:00
+Selection sort: helpful because it helps us in searching for the smallest element in the unsorted sublist.
+Lian Elsa Linton
+10/11/2022 16:53:00
+Is there a particular instance where a simpler sorting algorithm is better than a sorting algorithm like quick sort?
+Vinson Wong
+10/11/2022 18:31:00
+Some sorting algorithms have better time and/or memory efficiency than others. It really depends on the applications and what the program is trying to accomplish.
+Mahvesh Wahid
+10/11/2022 19:01:00
+Merge sort: helps to merge two arrays together.
+Seth Vigil
+10/11/2022 21:05:00
+Merge sort:  It allows to programmer to sort the data structure in half, from this it then merges the sorted sub arrays into one.
+Lian Elsa Linton
+10/11/2022 21:06:00
+Bubble Sort: Slowest sorting algorithm that works by comparing each pair of elements in the given order. 
+Phillip Le
+10/11/2022 21:40:00
+Analyzing the performance of algorithms - Being able to analyze the performance of algorithms is important as generally the faster, more efficient algorithm is preferable
+Brenton Outangoun
+10/11/2022 22:31:00
+Selection sort - This is important to know because it works well with smaller lists and has good memory usage
+Junghyun Baik
+10/11/2022 23:14:00
+Bubble Sort: A sort that forwards smaller values compared to the data next to it.
+Alexia Avila
+10/11/2022 23:15:00
+Linear search: Searching is a common task and linear search is one way to search, linear search means to look for an element in an array or list and inspeacting it. 
+Neema Taghipour
+10/11/2022 23:22:00
+Selection Sort- Finds the smallest value in a list and brings it to the front
+Yutong Han
+10/11/2022 23:30:00
+Quick sort：quick sort is useful for sorting array. It works by selecting a 'pivot' element from the array and partitioning the other elements into two sub-arrays, according to whether they are less than or greater than the pivot
+Ralph Lagmay
+10/11/2022 23:32:00
+Insertion sort - It can help with already sorted lists
+Michael Mansfield
+10/11/2022 23:51:00
+Linear Searching , Will check every element in a list but is very slow
+Fizza Ali
+10/11/2022 23:52:00
+Selection sort: useful for locating the smallest element in the unsorted sublist.
+Thomas Leber
+10/12/2022 23:20:00
+Binary search divides the search space in half each time. asks higher or lower question
+Gabriel Nevarez
+10/12/2022 20:45:00
+Big O notation: gives metric to identify efficiency
+Syed Abidi
+10/13/2022 15:35:00
+Merge sort: divides arrays and merges / combines them

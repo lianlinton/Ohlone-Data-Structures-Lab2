@@ -1,32 +1,35 @@
-/*******************************************************
-
- * Program Name: Lab 4 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 14, 2022
-
- * Description: Base class is the Menu Class and updates the user data information into Login objects in a vector array. 
- *******************************************************/
 #pragma once
+#include <fstream>
 #include "menu.h"
 #include "login.h"
 
 using namespace std;
 
-const string USERS = "users.csv";
+const string USERS_DATA = "users.csv";
 
-enum LOGIN_MENU_OPTION { LOGIN='1', CREATE='2', RESET='3', EXIT='x' };
+enum LOGIN_MENU_OPTION {
+	LOGIN='1',
+	CREATE='2',
+	RESET='3',
+	EXIT='x'
+};
 
 class LoginMenu : public Menu {
 
 public: 
 	LoginMenu();
+	~LoginMenu();
+
 	bool doLogin();
+	void doLogout();
 	void doCreate();
 	void doReset();
+	void doSave();			// TODO
+
+	
 
 private:
+	fstream inFile;
 	Login login;
 	vector<Login> users;
 

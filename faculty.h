@@ -1,50 +1,34 @@
-/*******************************************************
-
- * Program Name: Lab 4 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 14, 2022
-
- * Description: Base class is Person class with specific data attached for faculty members.
- *******************************************************/
-
 #pragma once
 #include "person.h"
+#include <string>
+#include <iostream>
+#include <iomanip>
+using namespace std;
 
-class Faculty : public Person {
-	public: 
-		//Accessor Functions
-		string getID() const{
-			return this->id;
-		};
-		string getDepartment() const{
-			return this->department;
-		};
+class Faculty: public Person{
+public:
+	Faculty();
+	Faculty(int id, string d, const Person&);
+	~Faculty() {};
 
-		//Mutator Functions
-		void setID(string id){
-			this->id = id;
-		};
-		void setDepartment(string department){
-			this->department = department;
-		};
+	//Mutator functions
+	void setDepartment(string d) { departmentName = d;};
 
-		/*friend ostream& operator<<(ostream& out, Faculty a){
-			out << a.getFirstName() << " " << a.getLastName() << "("
-				<< a.getDepartment() << " ";
-			return out;
-		};*/
+	//Accesor functions	
+	string getDepartment() const { return departmentName;};
 
-		void printFacultyInfo(){
-			cout << "Faculty: " << firstName << " " << lastName << endl;
-			cout << "ID: " << id <<  " Department: " << department << endl;
-			cout << "Address: " << address << endl;
-		}
+	void print() const;
 
-	
-	private: 
-		string id;
-		string department;
-	
+	//Overloaded operators
+	bool operator==(const Faculty&) const;
+	bool operator!=(const Faculty&) const;
+	bool operator>(const Faculty&) const;
+	bool operator<(const Faculty&) const;
+	bool operator>=(const Faculty&) const;
+	bool operator<=(const Faculty&) const;
+
+private:
+	 // int facultyId; // lab 5 - Person::id
+	 string departmentName; 
 };
+

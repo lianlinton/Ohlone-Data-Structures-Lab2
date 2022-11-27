@@ -1,187 +1,165 @@
-/*******************************************************
-
- * Program Name: Lab 4 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 14, 2022
-
- * Description: The Student Menu class represents the different functionalities in the Student Section. 
-
- *******************************************************/
-#include "menu.h"
-#include "studentMenu.h"
-#include "dateType.h"
-#include <typeinfo>
-#include <string>
-#include <vector>
-#include <iostream>
-#include <fstream>
+#pragma once
 #include <sstream>
+#include "menu.cpp"
+#include "studentMenu.h"
+#include "studentType.cpp"
+#include "linkedQueue.h"
+#include "utils.cpp"
 
-//Initialized studentMenu object and laod data
-StudentMenu:: StudentMenu() : Menu("Student Menu"){
-	addOption("1) Select a student");
-	addOption("2) View student details");
-	addOption("3) Add a student");
-	addOption("4) Edit a student");
-	addOption("5) Delete a student");
+StudentMenu::StudentMenu()
+    : Menu("Course Menu") {
+    addOption("1) Student list");   // Lab 5 - sortBy any field in class Student and Person
+    addOption("2) View student details");
+    addOption("3) Add a student");
+    addOption("4) Edit a student");
+    addOption("5) Delete a student");
     addOption("x) Exit");
-	list = new OrderedArrayListType<Student*>();
-	pStudent = nullptr;
-	init();
+
+    list = new LinkedQueueType<Student>();
+    init();    
+};
+
+StudentMenu::~StudentMenu() {    
+    map<string, Student*>::iterator it;
+    for (it = mapStudent.begin(); it != mapStudent.end(); ++it){
+        delete it->second;
+    }
+    delete list;
+    inFile.close();
 }
 
-//Destructor: Delete elements of list
-StudentMenu::~StudentMenu(){
-	for (int i = 0; i < (int) list->listSize(); i++){
-		Student *p;
-		list->retrieveAt(i, p);
-		i++;
-	}
-	delete list;
+void StudentMenu::init() {
+    //string filename = "WRONG FILE";
+    string filename = STUDENT_DATA;
+    int count = 0;
+    FileException except;
+    while (true){
+        try{
+            openFile(inFile, filename);
+            if (inFile.fail()){
+                throw except;
+            }
+            break;
+        } catch (exception &e){
+            count++;
+            if (count > 3){
+                break;
+            }
+            cout << except.what() << endl;
+            cout << "Enter filename: " << endl;
+            cin >> filename;
+        }
+    }
+    string sid;
+    string firstName;
+    string lastName;
+    string address;
+    string city;
+    string state;
+    string zip;
+    string phoneNumber;
+    string email;
+
+    string studentLine = "";
+
+    while (getline(inFile, studentLine)) {
+        stringstream ss(studentLine);
+        getline(ss, sid, ',');
+        getline(ss, firstName, ',');
+        getline(ss, lastName, ',');
+        getline(ss, address, ',');
+        getline(ss, city, ',');
+        getline(ss, state, ',');
+        getline(ss, zip, ',');
+        getline(ss, phoneNumber, ',');
+        getline(ss, email, ',');
+
+        //Student s;
+        Student* p = new Student();
+        mapStudent.insert(pair<string, Student*>(sid, p));
+        p->setId(stoi(sid));
+        p->setFirstName(firstName);
+        p->setLastName(lastName);
+        p->setAddress(address);
+        p->setCity(city);
+        p->setState(state);
+        p->setZip(zip);
+        p->setPhone(phoneNumber);
+        p->setEmail(email);
+        list->addQueue(*p);
+    }
+    inFile.clear();
 }
 
-//Load student information of file 
-void StudentMenu::init(){
-    ifstream inFile;
-	inFile.open(STUDENT_DATA);
-    string id;
-	string firstName; 
-	string lastName; 
-	string address; 
-	string city; 
-	string state; 
-	string zip; 
-	string phone;
-	string email;
-	//2,Yong,Gao,CS,43600 Mission Blvd.,Fremont,CA,94538,ygao@ohlone.edu,510-659-6000
-	string line = "";
-	while (getline(inFile, line)) {
-		stringstream ss(line);
-		getline(ss, id, ',');
-		getline(ss, firstName, ',');
-		getline(ss, lastName, ',');
-		getline(ss, address, ',');
-		getline(ss, city, ',');
-		getline(ss, state, ',');
-		getline(ss, zip, ',');
-		getline(ss, email, ',');
-		getline(ss, phone, ',');
-		//cout << phone << endl;
-		Student* _student = new Student();
-		int num = stoi(id);
-		_student->setID(num);
-		_student->setFirstName(firstName);
-		_student->setLastName(lastName);
-		_student->setAddress(address);
-		_student->setCity(city);
-		_student->setState(state);
-		num = stoi(zip);
-		_student->setZip(num);
-		_student->setEmail(email);
-		_student->setPhoneNumber(phone);
-		list->insertEnd(_student);
-	}
-	inFile.close();
+void StudentMenu::doList() {
+    cout << "***** Students *****" << endl;
+    //Make a copy of the stack to go through each element
+    LinkedQueueType<Student> tmp = *list;
+    while (!tmp.isEmptyQueue())  {
+        //Student s = tmp.front();
+        tmp.front().print();
+        tmp.deleteQueue();
+    }
 }
 
-//Display students in the list
-void StudentMenu::doList(){
-	//cout << "Here!!!" << endl;
-	Menu c("List of Students");
-	Student* p;
-	int count = 1;
-	for (int i =1; i <= list->listSize(); i++){
-		list->retrieveAt(i-1,p);
-		//cout << "p Name: "<< i << p->getName() << endl;
-		c.addOption(to_string(count) + ") "+ p->getFirstName() + " " + p->getLastName() + " " + to_string(p->getID()));
-		count++;
-	}
-	int input = c.getInput();
-	list->retrieveAt(input-1, p);
-	pStudent = p;
+void StudentMenu::doView() {
+    cout << "Enter student Id: ";
+    string sid;
+    cin >> sid;
+    Student *p = mapStudent[sid];
+    if (p != nullptr){
+        p->print();
+    } else {
+        cout << "Id not found" << endl;
+    }
 }
 
-//View student information of the selected student
-void StudentMenu::doView(){
-	if (pStudent == nullptr){
-		doList();
-	}
-	pStudent->printStudentInfo();
+void StudentMenu::doAdd() {
+    /*string sid;
+    string firstName;
+    string lastName;
+    string address;
+    string city;
+    string state;
+    string zip;
+    string phoneNumber;
+    string email;
+
+    string studentLine = "";
+
+    //Student s;
+    Student* p = new Student();
+    mapStudent.insert(pair<string, Student*>(sid, p));
+    p->setId(stoi(sid));
+    p->setFirstName(firstName);
+    p->setLastName(lastName);
+    p->setAddress(address);
+    p->setCity(city);
+    p->setState(state);
+    p->setZip(zip);
+    p->setPhone(phoneNumber);
+    p->setEmail(email);
+    list->addQueue(*p);*/
 }
 
-//Edit student address of the selected student
-void StudentMenu::doEdit(){
-	if (pStudent == nullptr){
-		doList();
-	} 
-	Student* p = pStudent;
-	string temp;
-	cout << "Enter new address (" + p->getAddress() << "):";
-	cin.ignore();
-	getline(cin, temp);
-	if (!temp.empty()){
-		p->setAddress(temp);
-	}
-	p->printStudentInfo();
+void StudentMenu::doEdit() {
+    cout << "Enter student Id: ";
+    string sid;
+    cin >> sid;
+    Student *p = mapStudent[sid];
 }
 
-//Add student to the list
-void StudentMenu::doAdd(){
-    string id;
-	string firstName; 
-	string lastName; 
-	string address; 
-	string city; 
-	string state; 
-	string zip; 
-	string phone;
-	string email;
-
-    cout << "Enter ID: ";
-    cin.ignore();
-    getline(cin, id);
-	cout << "Enter first name: ";
-	//cin.ignore();
-	getline(cin, firstName);
-	cout << "Enter last name: ";
-	//cin.ignore();
-	getline(cin, lastName);
-	cout << "Enter address: ";
-	//cin.ignore();
-	getline(cin, address);
-	cout << "Enter city: ";
-	getline(cin, city);
-	cout << "Enter state: ";
-	getline(cin, state);
-	cout << "Enter zip: ";
-	getline(cin, zip);
-	cout << "Enter phone: ";
-	getline(cin, phone);
-	cout << "Enter email: ";
-	getline(cin, email);
-
-	Student* _student = new Student();
-    int num = stoi(id);
-    _student->setID(num);
-    _student->setFirstName(firstName);
-    _student->setLastName(lastName);
-    _student->setAddress(address);
-    _student->setCity(city);
-    _student->setState(state);
-    num = stoi(zip);
-    _student->setZip(num);
-    _student->setEmail(email);
-    _student->setPhoneNumber(phone);
-    list->insertEnd(_student);
-    pStudent = _student;
+void StudentMenu::doDelete() {
+   cout << "Enter student Id: ";
+   string sid;
+   cin >> sid;
+   delete mapStudent[sid];
 }
 
-//delete selected student from the list
-void StudentMenu::doDelete(){
-	if (pStudent == nullptr){
-		doList();
-	}
-	list->remove(pStudent);
+/**
+* Save to file
+*/
+void StudentMenu::doSave() {
+    cout << "Saving... " << STUDENT_DATA << endl;
+    // TODO
 }

@@ -1,69 +1,38 @@
-/*******************************************************
-
- * Program Name: Lab 4 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 14, 2022
-
- * Description: Template file
- *******************************************************/
-#pragma once 
+#pragma once
 #include <vector>
 #include <string>
 #include "home.h"
-#include "annoucement.h"
+#include "announcement.h"
 #include "discussion.h"
 #include "assignment.h"
 #include "grade.h"
 #include "syllabus.h"
 #include "student.h"
 #include "person.h"
-#include "loginMenu.h"
-#include "course.h"
 #include "faculty.h"
-#include "myOhlone.h"
+#include "course.h"
+#include "loginMenu.h"
 #include "courseMenu.h"
+#include "mainMenu.h"
 
 using namespace std;
 
 class MyCanvas {
-	public: 
-		//Constructor
-		MyCanvas();
-		~MyCanvas(){
-			courseList->clear();
-			studentList->clear();
-			faculty->clear();
-			delete courseList;
-			delete studentList;
-			delete faculty;
-		};
-		/*//Handles Login Menu
-		bool doLogin() const;
-		//Handles Main Menu
-		void doMenu();
-		//Loads Course Data
-		void initCourseData();
-		void initFacultyData();
-		void initStudentData();*/
+public:
+	MyCanvas();
+	~MyCanvas();
 
-		bool doLogin() const;
-		void doCourseMenu() const;
-		void doStudentMenu() const;
-		void doFacultyMenu() const;
-		void doMenu() const;
+	bool doLogin();
+	void doLogout();
+	bool doCourseMenu();
+	void doMainMenu();
 
-	private:
-		vector<Home> home;
-		vector<Announcement> announcements;
-		vector<Discussion> discussions;
-		vector<Assignment> assignments;
-		vector<Grade> grades;
-		vector<Syllabus> syllabus;
-		vector<Student> people;
-		// additional methods, objects, and variables...
-		vector<Course*> *courseList;
-		vector<Student*> *studentList;
-		vector<Faculty*> *faculty;
+	Course& getSelectedCourse() {
+		return courseMenu.getSelectedCourse();
+	};
+
+private:	
+	LoginMenu loginMenu;
+	CourseMenu courseMenu;
+	MainMenu mainMenu;	
 };

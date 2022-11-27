@@ -1,15 +1,3 @@
-/*******************************************************
-
- * Program Name: Lab 4 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 14, 2022
-
- * Description: Template File
-
- *******************************************************/
-#pragma once
 #include <iostream>
 #include <iomanip>
 #include <string>

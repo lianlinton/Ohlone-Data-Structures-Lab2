@@ -1,37 +1,32 @@
-/*******************************************************
-
- * Program Name: Lab 4 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 14, 2022
-
- * Description: Base class is Person class with student specific values like id added. 
- *******************************************************/
 #pragma once
 #include "person.h"
-
+#include <iostream>
+#include <string>
+#include <iomanip>
 using namespace std;
 
-class Student : public Person {
-	public: 
-		//Accessor Method
-		int getID(){
-			return id;
-		};
+class Student: public Person{
+public:
+	Student();
+	Student(const Person& otherObject);
+	~Student(){};
 
-		//Mutator Functions
-		void setID(int id){
-			this->id = id;
-		};
+	string getFullName();
 
-		void printStudentInfo(){
-			cout << "Student: " << firstName << " " << lastName << endl;
-			cout << "ID: " << id << endl;
-			cout << "Address: " << address << endl;
-		}
+	void print() const;
 
-	private: 
-		int id;
+	Student& operator=(const Student& other); // Lab 5
+
+	//Overloaded operators
+	bool operator==(const Student&) const;
+	bool operator!=(const Student&) const;
+	bool operator>(const Student&) const;
+	bool operator<(const Student&) const;
+	bool operator>=(const Student&) const;
+	bool operator<=(const Student&) const;
+
+private:
+    // string studentID; lab 5 use id in class Person
+   
 
 };

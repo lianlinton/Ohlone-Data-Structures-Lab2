@@ -1,230 +1,268 @@
-/*******************************************************
-
- * Program Name: Lab 4 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 14, 2022
-
- * Description: The Course Menu class represents the different functionalities in the Course Section. 
-
- *******************************************************/
-
-#include "menu.h"
-#include "courseMenu.h"
-#include "dateType.h"
-#include <typeinfo>
-#include <string>
-#include <vector>
 #include <iostream>
+#include <string>
 #include <fstream>
 #include <sstream>
+#include "menu.cpp"
+#include "courseMenu.h"
+//#include "unorderedArrayListType.h"
+#include "facultyMenu.cpp"
+#include "courseListType.cpp"
+#include "utils.cpp"
+#include "fileException.h"
+#include "stoiException.h"
 
-//Initialize Course Menu with Menu object and list
-CourseMenu:: CourseMenu() : Menu("Course Menu"){
-	addOption("1) Select a course");
-	addOption("2) View course details");
-	addOption("3) Add a course");
-	addOption("4) Edit a course");
-	addOption("5) Delete a course");
-	addOption("x) Exit");
-	list = new OrderedArrayListType<Course*>();
-	pCourse = nullptr;
-	init();
+using namespace std;
+
+CourseMenu::CourseMenu()
+    : Menu("Course Menu") {
+    addOption("1) Select a course from the list of courses"); // Lab 5 - 1) sortBy any field in class Course; 2) use FacultyMenu to set the faculty info
+    addOption("2) View course details");
+    addOption("3) Add a course");   // Lab 5 - use FacultyMenu to select a faculty to add 
+    addOption("4) Edit a course");  // Lab 5 - use FacultyMenu to select a faculty to edit
+    addOption("5) Delete a course");
+    addOption("x) Exit");
+
+    pCourse = nullptr;    
+    list = new CourseListType();    // Lab 5 UnorderedArrayListType to CourselistType
+    init();
+};
+
+CourseMenu::~CourseMenu() {    
+    delete list;
+    inFile.close();
 }
 
-//Destructor: Delete all elements in list
-CourseMenu::~CourseMenu(){
-	for (int i = 0; i < (int) list->listSize(); i++){
-		Course *p;
-		list->retrieveAt(i, p);
-		i++;
-	}
-	delete list;
+/**
+* 
+* Read/populate course_data.csv into the list
+*/
+void CourseMenu::init() {
+    string filename = COURSE_DATA;
+    int count = 0;
+    FileException except;
+    while (true){
+        try{
+            openFile(inFile, filename);
+            if (inFile.fail()){
+                throw except;
+            }
+            break;
+        } catch (exception &e){
+            count++;
+            if (count > 3){
+                break;
+            }
+            cout << except.what() << endl;
+            cout << "Enter filename: " << endl;
+            cin >> filename;
+        }
+    }
+
+    string term;
+    string year;
+    string startDate; // convert previous date string to class DateType
+    string endDate;  // convert previous date string to class DateType
+    string name;
+    string section;
+    string id;
+    string meetDays;
+    string location;
+    string meetInfo;
+    string instructor;
+    string units;
+
+    string line = "";
+    while (getline(inFile, line)) {
+        stringstream ss(line);
+        getline(ss, term, ',');
+        getline(ss, year, ',');
+        getline(ss, startDate, ',');
+        getline(ss, endDate, ',');
+        getline(ss, name, ',');
+        getline(ss, section, ',');
+        getline(ss, id, ',');
+        getline(ss, meetDays, ',');
+        getline(ss, location, ',');
+        getline(ss, meetInfo, ',');
+        getline(ss, instructor, ',');
+        getline(ss, units, ',');
+        
+        Course c;
+        Course* p = &c;
+        try {
+            p->setTerm(term);
+            p->setYear(stoi(year));
+            p->setStartDate(startDate);
+            p->setEndDate(endDate);
+            p->setName(name);
+            p->setSection(section);
+            p->setId(id);
+            p->setMeetDays(meetDays);
+            p->setLocation(location);
+            p->setMeetInfo(meetInfo);
+            p->setInstructor(instructor);
+            // Lab 5 - find and update faculty
+            Faculty* f = facultyMenu.find(p->getInstructor());
+            p->setInstructor(*f);
+            p->setUnits(stoi(units));
+            list->insertEnd(*p);
+        } 
+
+        catch (exception& /**stoi*/){
+            
+        }
+
+        catch (exception& c){
+
+        }
+    }
+    inFile.clear();
 }
 
-//Load all course data information
-void CourseMenu::init(){
-    ifstream inFile;
-	inFile.open("course_data.csv");
-    //Fall,2022,8/24/2022,12/20/2022,Programming W/ Data Structures,CS-124-03,085698,T TH,Online,Newark,Pham,3
-	string term;        // Fall
-	string year;            // 2022
-	string startDate;    // 8/24/2022
-	string endDate;        // 12/20/2022
-	string name;        // Programming W/ Data Structures
-	string sectionName;     // CS-124-03
-	string sectionNumber;     //Number
-	string occurrence; //T TH
-	string platform;         // Online or On-Campus
-	string location; //Newark
-	string facultyName;         // JPHAM
-	string credit;         // 3
-
-	int counter = 0;
-	string line = "";
-	while (getline(inFile, line)) {
-		stringstream ss(line);
-		getline(ss, term, ',');
-		getline(ss, year, ',');
-		getline(ss, startDate, ',');
-		getline(ss, endDate, ',');
-		getline(ss, name, ',');
-		getline(ss, sectionName, ',');
-		getline(ss, sectionNumber, ',');
-		getline(ss, occurrence, ',');
-		getline(ss, platform, ',');
-		getline(ss, location, ',');
-		getline(ss, facultyName, ',');
-		getline(ss, credit, ',');
-		Course* _course = new Course();
-		_course->setTerm(term);
-		//cout << "Before Convert" << endl;
-		int num = stoi(year);
-		//cout << "Successfully Converted" << endl;
-		_course->setYear(num);
-		DateType start;
-		start.setDate(startDate);
-		_course->setStartDate(start);
-		DateType end;
-		end.setDate(endDate);
-		_course->setEndDate(end);
-		_course->setName(name);
-		_course->setSectionName(sectionName);
-		_course->setSectionNumber(sectionNumber);
-		_course->setLocation(location);
-		Faculty teacher;
-		teacher.setFirstName(" ");
-		teacher.setLastName(facultyName);
-		_course->setFaculty(teacher);
-		_course->setOccurrence(occurrence);
-		_course->setPlatform(platform);
-		num = stoi(credit);
-		//cout << num << endl;
-		_course->setCredit(num);
-		//cout << "Course: " << sizeof(_course) << endl;
-		list->insertEnd(_course);
-		//cout << "Counter:" << counter << endl;
-		counter++;
-	}
-	inFile.close(); 
+void CourseMenu::doList() {
+    Menu menu("List of Courses");
+    Course* p = nullptr;
+    for (int i = 1; i <= list->listSize(); i++) {
+        //list->retrieveAt(i - 1, c);
+        p = list->at(i - 1);
+        menu.addOption(p->getTerm() + " " + to_string(p->getYear()) + " " + p->getSection() + " " + p->getName());
+    }
+    int input = menu.getInput();
+    //list->retrieveAt(input - 1, c);
+    p = list->at(input - 1);
+    this->selectedCourse(*p);
 }
 
-//Display list of courses
-void CourseMenu::doList(){
-	//cout << "Here!!!" << endl;
-	Menu c("List of Courses");
-	Course* p;
-	int count = 1;
-	for (int i =1; i <= list->listSize(); i++){
-		list->retrieveAt(i-1,p);
-		//cout << "p Name: "<< i << p->getName() << endl;
-		c.addOption(to_string(count) + ") "+ p->getTerm() + " " + to_string(p->getYear()) + " " + p->getSectionName() + " ");
-		count++;
-	}
-	int input = c.getInput();
-	list->retrieveAt(input-1, p);
-	//this->selectedCourse(*p);
-	pCourse = p;
+void CourseMenu::doView() {
+    if (pCourse == nullptr) {        
+        doList();
+    }
+    pCourse->print();
 }
 
-//View course information of selected course
-void CourseMenu:: doView(){
-	if (pCourse == nullptr){
-		doList();
-	}
-	pCourse->printCourseInfo();
+void CourseMenu::doAdd() {
+    //Course* p = new Course();
+    Course c;    
+    Course* p = &c;
+
+    string term;
+    string year;
+    string startDate; // convert previous date string to class DateType
+    string endDate;  // convert previous date string to class DateType
+    string name;
+    string section;
+    string id;
+    string meetDays;
+    string location;
+    string meetInfo;
+    string instructor;
+    string units;
+
+    cout << "Enter Term: ";
+    cin >> term;
+    cout << "Enter Year: ";
+    cin >> year;
+    cout << "Enter start date (MM/DD/YYYY): ";
+    cin >> startDate;
+    cout << "Enter end date (MM/DD/YYYY): ";
+    cin >> endDate;
+    cout << "Enter course name: ";
+    cin.ignore();
+    getline(cin, name);
+    cout << "Enter section: ";
+    cin >> section;
+    cout << "Enter course Id: ";
+    cin >> id;
+    cin.ignore();
+    cout << "Enter meeting days: ";
+    cin >> meetDays;
+    cout << "Enter meeting location: ";
+    cin >> meetInfo;
+    cout << "Enter instructor id: ";
+    cin >> instructor;
+    cout << "Enter units: ";
+    cin >> units;
+    p->setTerm(term);
+    p->setYear(stoi(year));
+    p->setStartDate(startDate);
+    p->setEndDate(endDate);
+    p->setName(name);
+    p->setSection(section);
+    p->setId(id);
+    p->setMeetDays(meetDays);
+    p->setLocation(location);
+    p->setMeetInfo(meetInfo);
+    p->setInstructor(instructor);    
+    // Lab 5 - find and update faculty
+    Faculty* f = facultyMenu.find(p->getInstructor());
+    p->setInstructor(*f);
+    p->setUnits(stoi(units));
+    list->insertEnd(*p);
 }
 
-//Edit term information of selected course
-void CourseMenu::doEdit(){
-	if (pCourse == nullptr){
-		doList();
-	} 
-	Course* p = pCourse;
-	string temp;
-	cout << "Enter new term (" + p->getTerm() << "):";
-	cin.ignore();
-	getline(cin, temp);
-	if (!temp.empty()){
-		p->setTerm(temp);
-	}
-	p->printCourseInfo();
+void CourseMenu::doEdit() {
+    if (pCourse == nullptr) {
+        doList();
+    }
+    Course* p = pCourse;
+
+    string temp;
+    cout << "Enter new term or default  (" + p->getTerm() + "): ";
+    cin.ignore();
+    getline(cin, temp);
+
+    if (!temp.empty()) {
+        p->setTerm(temp);
+    }
+    
+    p->print();
 }
 
-//Add a new course to the list
-void CourseMenu::doAdd(){
-	string term;        // Fall
-	string year;            // 2022
-	string startDate;    // 8/24/2022
-	string endDate;        // 12/20/2022
-	string name;        // Programming W/ Data Structures
-	string sectionName;     // CS-124-03
-	string sectionNumber;     //Number
-	string occurrence; //T TH
-	string platform;         // Online or On-Campus
-	string location; //Newark
-	string facultyName;         // JPHAM
-	string credit;         // 3
-
-	cout << "Enter course name: ";
-	cin.ignore();
-	getline(cin, name);
-	cout << "Enter course term: ";
-	getline(cin, term);
-	cout << "Enter course year: ";
-	//cin.ignore();
-	getline(cin, year);
-	cout << "Enter course start date: ";
-	//cin.ignore();
-	getline(cin, startDate);
-	cout << "Enter course end date: ";
-	getline(cin, endDate);
-	cout << "Enter course section name: ";
-	getline(cin, sectionName);
-	cout << "Enter course section number: ";
-	getline(cin, sectionNumber);
-	cout << "Enter course occurrence: ";
-	getline(cin, occurrence);
-	cout << "Enter course platform: ";
-	getline(cin, platform);
-	cout << "Enter course location: ";
-	getline(cin, location);
-	cout << "Enter course teacher: ";
-	getline(cin, facultyName);
-	cout << "Enter course credit: ";
-	getline(cin, credit);
-
-	Course* _course = new Course();
-	_course->setTerm(term);
-	int num = stoi(year);
-	_course->setYear(num);
-	DateType start;
-	start.setDate(startDate);
-	_course->setStartDate(start);
-	DateType end;
-	end.setDate(endDate);
-	_course->setEndDate(end);
-	_course->setName(name);
-	_course->setSectionName(sectionName);
-	_course->setSectionNumber(sectionNumber);
-	_course->setLocation(location);
-	Faculty teacher;
-	teacher.setFirstName(" ");
-	teacher.setLastName(facultyName);
-	_course->setFaculty(teacher);
-	_course->setOccurrence(occurrence);
-	_course->setPlatform(platform);
-	num = stoi(credit);
-	_course->setCredit(num);
-	list->insertEnd(_course);
-	pCourse = _course;
+void CourseMenu::doDelete() {
+    if (pCourse == nullptr) {
+        doList();
+    }
+    list->remove(getSelectedCourse());
 }
 
-//Delete a course from the list 
-void CourseMenu::doDelete(){
-	if (pCourse == nullptr){
-		doList();
-	}
-	list->remove(pCourse);
+void CourseMenu::doFacultyMenu() {    
+    char option = FACULTY_MENU_OPTION::FACULTY_EDIT;
+    do {
+        option = facultyMenu.getOption();
+
+        if (option == FACULTY_MENU_OPTION::FACULTY_LIST) {
+            facultyMenu.doList();
+        }
+        else if (option == FACULTY_MENU_OPTION::FACULTY_VIEW) {
+            facultyMenu.doView();
+        }
+        else if (option == FACULTY_MENU_OPTION::FACULTY_ADD) {
+            facultyMenu.doAdd();
+        }
+        else if (option == FACULTY_MENU_OPTION::FACULTY_EDIT) {
+            facultyMenu.doEdit();
+        }
+        else if (option == FACULTY_MENU_OPTION::FACULTY_DELETE) {
+            facultyMenu.doDelete();
+        }
+        else if (option == FACULTY_MENU_OPTION::FACULTY_EXIT) {
+            // TODO facultyMenu.doSave();
+            cout << "Exiting Faculty Menu" << endl;
+        }
+    } while (option != FACULTY_MENU_OPTION::FACULTY_EXIT);
+}
+
+void CourseMenu::doSortedList() {    
+    // Sortby the list
+    list->sortBy();
+
+    // show list    
+    list->print();
+}
+
+/**
+* Save to file
+*/
+void CourseMenu::doSave() {
+    // TODO
 }

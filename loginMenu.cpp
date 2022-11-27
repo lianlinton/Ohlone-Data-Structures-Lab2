@@ -1,23 +1,13 @@
-/*******************************************************
-
- * Program Name: Lab 4 Project
-
- * Author: Lian Elsa Linton
-
- * Date: October 14, 2022
-
- * Description: Login class loads the users.csv file and updates a vector with Login information
- *******************************************************/
-#pragma once
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include "loginMenu.h"
+#include "login.cpp"
 #include "menu.cpp"
-#include <ctime>   
-//#include "users.csv"
+#include "utils.cpp"
+#include "loginException.h"
 
 using namespace std;
 
@@ -32,9 +22,32 @@ LoginMenu::LoginMenu()
 	initUserData();
 };
 
+LoginMenu::~LoginMenu() {
+	inFile.close();
+}
+
 void LoginMenu::initUserData() {
-	ifstream inFile;
-	inFile.open(USERS);
+	//string filename = "WRONG FILE";
+    string filename = USERS_DATA;
+    int count = 0;
+    FileException except;
+    while (true){
+        try{
+            openFile(inFile, filename);
+            if (inFile.fail()){
+                throw except;
+            }
+            break;
+        } catch (exception &e){
+            count++;
+            if (count > 3){
+                break;
+            }
+            cout << except.what() << endl;
+            cout << "Enter filename: " << endl;
+            cin >> filename;
+        }
+    }
 
 	string  username;
 	string  password;
@@ -49,21 +62,19 @@ void LoginMenu::initUserData() {
 		getline(ss, loginDateTime, ',');
 		getline(ss, logoutDateTime, ',');
 		Login _login;
-		//Login* login = new Login();
-		_login.setUserName(username);
+		_login.setUsername(username);
 		_login.setPassword(password);
-
 		users.push_back(_login);
 	}
 
-	inFile.close();
+	inFile.clear();
 }
 
 bool LoginMenu::authenticate() {
 	bool valid = false;
 	for (int i = 0; i < (int) users.size(); i++) {
-		if (login.getUserName() == users.at(i).getUserName() &&
-			login.getPassword() == users.at(i).getPassword()) {
+		if (login.getUsername() == users.at(i).getUsername() &&
+			login.getPassword() == users.at(i).getPassword()) {			
 			valid = true;
 			break;
 		}
@@ -73,28 +84,49 @@ bool LoginMenu::authenticate() {
 
 bool LoginMenu::doLogin() {
 	int attempt = 0;
-	do {
-		string username, password;
-		cout << "Username: ";
-		cin >> username;
-		cout << "Password: ";
-		cin >> password;
-		login.setUserName(username);
-		login.setPassword(password);
-		cout << endl;
-		if (authenticate()) {
-			return true;
+	LoginException except;
+	while (true){
+		try {
+			string username, password;
+			cout << "Username: ";
+			cin >> username;
+			cout << "Password: ";
+			cin >> password;
+			login.setUsername(username);
+			login.setPassword(password);
+			cout << endl;
+			if (authenticate()) {
+				return true;
+			} else {
+				throw except;
+			}
+		} catch (exception &e){
+			cout << except.what() << endl;
+			attempt++;
+			if (attempt > 3){
+				return false;
+			}
 		}
-	} while (++attempt < 3);
+	}
 	return false;
 }
 
 void LoginMenu::doCreate() {
-
+	// TODO: Lab 5 - create new user
 }
 
 
 void LoginMenu::doReset() {
-
+	// TODO: Lab 5 - change password
 }
 
+void LoginMenu::doLogout() {
+	// TODO: Lab 5 - save loginDateTime/logoutDateTime to USERS_DATA
+};
+
+/**
+* Save to file
+*/
+void LoginMenu::doSave() {
+	// TODO
+}
