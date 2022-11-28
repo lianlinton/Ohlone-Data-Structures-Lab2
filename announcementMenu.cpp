@@ -7,6 +7,8 @@
 #include "announcementListType.cpp"
 #include "linkedStack.h"
 #include "utils.cpp"
+#include "hashMap.cpp"
+#include "dateTime.h"
 
 using namespace std;
 
@@ -51,6 +53,7 @@ void AnnouncementMenu::init() {
             cin >> filename;
         }
     }
+    int annCount = 0;
     string title;
     string postDate;
     string text;
@@ -63,8 +66,11 @@ void AnnouncementMenu::init() {
         a.setDateType(postDate);
         a.setText(text);
         list->push(a);
+        table.insertElement(a);
+        annCount++;
     }
     inFile.clear();
+    //table.setTableSize(annCount);
 }
 
 void AnnouncementMenu::doList() {
@@ -80,22 +86,80 @@ void AnnouncementMenu::doList() {
 
 void AnnouncementMenu::doView() {
     cout << "***** View Announcement *****" << endl;
-    // TODO...
+    /*string title;
+    cout << "Enter the title: " << endl;
+    cin.ignore();
+    stringstream ss(title);
+    getline(ss, title, '\n');*/
+    table.viewElement("Week 5 Announcement (9/26/2022)");
 }
 
 void AnnouncementMenu::doAdd() {
     cout << "***** Add Announcement *****" << endl;
-    // TODO...
+    string title;
+    string date;
+    string text;
+    Announcement announce;
+    cout << "Enter title: ";
+    cin >> title;
+    cout << "Enter date (MM/DD/YYYY): ";
+    cin >> date;
+    cout << "Enter message: ";
+    cin >> text;
+    announce.setTitle(title);
+    announce.setDateType(date);
+    announce.setText(text);
+    //Announcement *p = &announce;
+    list->push(announce);
+    table.insertElement(announce);
 }
 
 void AnnouncementMenu::doEdit() {
     cout << "***** Edit Announcement *****" << endl;
-    // TODO...
+    string message;
+    string title = "Week 5 Announcement (9/26/2022)";
+    cout << "Enter new message for "<< title << ": ";
+    //cin.ignore();
+    cin >> message;
+    cout << message << endl;
+    table.editElement(title, message);
+    LinkedStackType<Announcement> copy;
+    while (!list->isEmptyStack()) {
+        Announcement a = list->top();
+        if(a.getTitle() == title+"\r"){
+            a.setText(message);
+        }
+        //a.print();
+        copy.push(a); // advance to next
+        list->pop();
+    }
+    while (!copy.isEmptyStack()){
+        Announcement a = copy.top();
+        list->push(a);
+        copy.pop();
+    }
 }
 
 void AnnouncementMenu::doDelete() {
     cout << "***** Delete Announcement *****" << endl;
-    // TODO...
+    cout << "Deleted for Week 2 Announcement (9/6/2022)" << endl;
+    table.deleteElement("Week 2 Announcement (9/6/2022)");
+    LinkedStackType<Announcement> copy;
+    while (!list->isEmptyStack()) {
+        Announcement a = list->top();
+        if(a.getTitle() == "Week 2 Announcement (9/6/2022)\r"){
+            list->pop();
+            break;
+        }
+        //a.print();
+        copy.push(a); // advance to next
+        list->pop();
+    }
+    while (!copy.isEmptyStack()){
+        Announcement a = copy.top();
+        list->push(a);
+        copy.pop();
+    }
 }
 
 /**
@@ -103,5 +167,17 @@ void AnnouncementMenu::doDelete() {
 */
 void AnnouncementMenu::doSave() {    
     cout << "Saving... " << ANNOUNCEMENT_DATA << endl;
-    // TODO...
+    if (inFile.is_open()) {
+        Announcement* p;
+        /*HashMapTable table::iterator it;
+        for (it = mapStudent.begin(); it != mapStudent.end(); ++it){
+            p = it->second;
+            //inFile << p->toCSV() << endl;
+        }*/
+    }
+    else {
+        cerr << "Failed to open file : " << ANNOUNCEMENT_DATA
+            << " (errno " << errno << ")" << endl;
+    }
+    cout << "Save!!!" << endl << endl;
 }

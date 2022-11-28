@@ -8,6 +8,7 @@
 #include "assignmentMenu.h"
 #include "unorderedArrayListType.h"
 #include "utils.cpp"
+#include "stoiException.h"
 
 using namespace std;
 
@@ -47,6 +48,7 @@ void AssignmentMenu::init() {
     string filename = ASSIGNMENT_DATA;    
     int count = 0;
     FileException except;
+    stoiException stoixcept;
     while (true){
         try{
             openFile(inFile, filename);
@@ -74,6 +76,7 @@ void AssignmentMenu::init() {
 
     string line = "";
     while (getline(inFile, line)) {
+
         stringstream ss(line);
         getline(ss, name, ',');
         getline(ss, availableDate, ',');
@@ -82,14 +85,22 @@ void AssignmentMenu::init() {
         getline(ss, points, ',');
         getline(ss, status, ',');
 
-        Assignment* p = new Assignment();
-        p->setName(name);
-        p->setAvailableDate(availableDate);
-        p->setDueDate(dueDate);
-        p->setPossiblePoint(stoi(possiblePoints));
-        p->setPoint(stoi(points));
-        p->setStatus(stoi(status));
-        list->insertEnd(p);
+        try {
+            Assignment* p = new Assignment();
+            p->setName(name);
+            try {
+                p->setAvailableDate(availableDate);
+                p->setDueDate(dueDate);
+                p->setPossiblePoint(stoi(possiblePoints));
+                p->setPoint(stoi(points));
+                p->setStatus(stoi(status));
+			} catch(exception& e){
+				throw stoixcept;
+			}
+            list->insertEnd(p);
+        } catch(stoiException& e){
+            //cout << e.what() << endl;
+        }
     }
     inFile.clear();
 }

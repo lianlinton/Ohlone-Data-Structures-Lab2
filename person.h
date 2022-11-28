@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
+#include "stoiException.h"
 
 using namespace std;
 
@@ -57,4 +58,5 @@ protected:
 	string zip;			// student zip code
 	string phone;		// student's phone number
 	string email;
+	stoiException stoix;
 };

@@ -16,6 +16,12 @@
         "__hash_table": "cpp",
         "algorithm": "cpp",
         "filesystem": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "exception": "cpp",
+        "ios": "cpp",
+        "map": "cpp",
+        "new": "cpp",
+        "__tree": "cpp",
+        "list": "cpp"
     }
 }

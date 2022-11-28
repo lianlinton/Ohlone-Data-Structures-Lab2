@@ -6,6 +6,7 @@
 #include "facultyMenu.h"
 #include "utils.cpp"
 #include "unorderedArrayListType.h"
+#include "stoiException.h"
 
 FacultyMenu::FacultyMenu()
     : Menu("Course Menu") {
@@ -30,6 +31,7 @@ void FacultyMenu::init() {
     string filename = FACULTY_DATA;
     int count = 0;
     FileException except;
+	stoiException stoixcept;
     while (true){
         try{
             openFile(inFile, filename);
@@ -77,19 +79,26 @@ void FacultyMenu::init() {
 
 		// sets variables to the faculty array 
 		Faculty f;
-		Faculty* _faculty = &f;
-		_faculty->setId(stoi(id));
-		_faculty->setFirstName(firstName);
-		_faculty->setLastName(lastName);
-		_faculty->setDepartment(department);
-		_faculty->setAddress(address);
-		_faculty->setCity(city);
-		_faculty->setState(state);
-		_faculty->setZip(zip);
-		_faculty->setEmail(email);
-		_faculty->setPhone(number);
-
-		list->insertEnd(*_faculty);
+		try {
+            Faculty* _faculty = &f;
+            try {
+				_faculty->setId(stoi(id));
+			} catch(exception& e){
+				throw stoixcept;
+			}
+            _faculty->setFirstName(firstName);
+			_faculty->setLastName(lastName);
+			_faculty->setDepartment(department);
+			_faculty->setAddress(address);
+			_faculty->setCity(city);
+			_faculty->setState(state);
+			_faculty->setZip(zip);
+			_faculty->setEmail(email);
+			_faculty->setPhone(number);
+			list->insertEnd(*_faculty);
+        } catch(stoiException& e){
+            cout << e.what() << endl;
+		}
 	}
 
     inFile.clear();
@@ -141,7 +150,7 @@ void FacultyMenu::doAdd() {
 	string zip;
 	string email;
 	string number;
-
+	stoiException stoixcept;
 
 	// user prompt to enter elements of the array to add
 	cout << "Enter id: ";
@@ -169,19 +178,25 @@ void FacultyMenu::doAdd() {
 
 
 	// new variables are set to the course array
-	p->setId(stoi(id));
-	p->setFirstName(firstName);
-	p->setLastName(lastName);
-	p->setDepartment(department);
-	p->setAddress(address);
-	p->setCity(city);
-	p->setState(state);
-	p->setZip(zip);
-	p->setEmail(email);
-	p->setPhone(number);
-
-	// variables are added to the array
-	list->insertEnd(*p);
+	try {
+		try {
+			p->setId(stoi(id));
+		} catch(exception& e){
+			throw stoixcept;
+		}
+		p->setFirstName(firstName);
+		p->setLastName(lastName);
+		p->setDepartment(department);
+		p->setAddress(address);
+		p->setCity(city);
+		p->setState(state);
+		p->setZip(zip);
+		p->setEmail(email);
+		p->setPhone(number);
+		list->insertEnd(*p);
+	} catch(stoiException& e){
+		cout << e.what() << endl;
+	}
 }
 
 void FacultyMenu::doEdit() {

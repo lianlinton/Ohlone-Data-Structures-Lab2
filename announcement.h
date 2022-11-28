@@ -13,6 +13,7 @@ class Announcement{
 
         void setTitle(string name) { title = name; };
         void setDateType(string dt) { postDate.setDate(dt); };
+        void setDateType(DateType dt) { postDate = dt; };
         void setText(string txt) { text = txt; };
 
         string getTitle() const { return title; }
@@ -28,7 +29,8 @@ class Announcement{
         bool operator<(const Announcement&) const;
         bool operator>(const Announcement&) const;
         bool operator==(const Announcement&) const;
-        bool operator!=(const Announcement&) const;        
+        bool operator!=(const Announcement&) const;
+        //void operator=(Announcement&) const;          
 
     private:
         string title;

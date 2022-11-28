@@ -5,6 +5,9 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include "stoiException.h"
+
+stoiException stoixcept;
 
 using namespace std;
 
@@ -43,7 +46,17 @@ public:
 	void setLocation(string l) { location = l; };
 	void setMeetInfo(string m) { meetInfo = m; };	
 	void setUnits(int u) { units = u; };
-	void setInstructor(string id) { instructor.setId(stoi(id)); };
+	void setInstructor(string id) { 
+		try {
+			try {
+				instructor.setId(stoi(id)); 
+			} catch(exception& e){
+				throw stoixcept;
+			}
+        } catch(stoiException& e){
+            cout << e.what() << endl;
+        }
+	};
 	void setInstructor(Faculty& f) { instructor = f; }
 
 

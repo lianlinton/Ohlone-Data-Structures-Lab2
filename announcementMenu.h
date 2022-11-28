@@ -5,7 +5,8 @@
 #include "menu.h"
 #include "linkedStack.h"
 #include "announcementListType.h"
-
+#include "hashMap.cpp"
+#include "dateTime.h"
 
 using namespace std;
 
@@ -50,4 +51,5 @@ private:
 	fstream inFile;
 	Announcement* pSelected;
 	AnnouncementListType* list;
+	HashMapTable table;
 };

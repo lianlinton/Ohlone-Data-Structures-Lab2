@@ -5,6 +5,7 @@
 #include "studentType.cpp"
 #include "linkedQueue.h"
 #include "utils.cpp"
+#include "stoiException.h"
 
 StudentMenu::StudentMenu()
     : Menu("Course Menu") {
@@ -50,6 +51,7 @@ void StudentMenu::init() {
             cin >> filename;
         }
     }
+    stoiException stoiExcept;
     string sid;
     string firstName;
     string lastName;
@@ -73,20 +75,28 @@ void StudentMenu::init() {
         getline(ss, zip, ',');
         getline(ss, phoneNumber, ',');
         getline(ss, email, ',');
+        try {
+            //Student s;
+            Student* p = new Student();
+            try {
+                p->setId(stoi(sid));
+            } catch(exception& e){
+                throw stoiExcept;
+            }
+            p->setFirstName(firstName);
+            p->setLastName(lastName);
+            p->setAddress(address);
+            p->setCity(city);
+            p->setState(state);
+            p->setZip(zip);
+            p->setPhone(phoneNumber);
+            p->setEmail(email);
+            list->addQueue(*p);
+            mapStudent.insert(pair<string, Student*>(sid, p));
 
-        //Student s;
-        Student* p = new Student();
-        mapStudent.insert(pair<string, Student*>(sid, p));
-        p->setId(stoi(sid));
-        p->setFirstName(firstName);
-        p->setLastName(lastName);
-        p->setAddress(address);
-        p->setCity(city);
-        p->setState(state);
-        p->setZip(zip);
-        p->setPhone(phoneNumber);
-        p->setEmail(email);
-        list->addQueue(*p);
+        } catch(stoiException& e){
+            cout << e.what() << endl;
+        }
     }
     inFile.clear();
 }
@@ -94,11 +104,15 @@ void StudentMenu::init() {
 void StudentMenu::doList() {
     cout << "***** Students *****" << endl;
     //Make a copy of the stack to go through each element
-    LinkedQueueType<Student> tmp = *list;
+    /*LinkedQueueType<Student> tmp = *list;
     while (!tmp.isEmptyQueue())  {
         //Student s = tmp.front();
         tmp.front().print();
         tmp.deleteQueue();
+    }*/
+    map<string, Student*>::iterator it;
+    for (it = mapStudent.begin(); it != mapStudent.end(); ++it){
+        it->second->print();
     }
 }
 
@@ -115,7 +129,8 @@ void StudentMenu::doView() {
 }
 
 void StudentMenu::doAdd() {
-    /*string sid;
+    stoiException stoiExcept;
+    string sid;
     string firstName;
     string lastName;
     string address;
@@ -127,33 +142,78 @@ void StudentMenu::doAdd() {
 
     string studentLine = "";
 
+    cout << "Enter ID: ";
+    cin.ignore();
+    getline(cin, sid);
+	cout << "Enter first name: ";
+	//cin.ignore();
+	getline(cin, firstName);
+	cout << "Enter last name: ";
+	//cin.ignore();
+	getline(cin, lastName);
+	cout << "Enter address: ";
+	//cin.ignore();
+	getline(cin, address);
+	cout << "Enter city: ";
+	getline(cin, city);
+	cout << "Enter state: ";
+	getline(cin, state);
+	cout << "Enter zip: ";
+	getline(cin, zip);
+	cout << "Enter phone: ";
+	getline(cin, phoneNumber);
+	cout << "Enter email: ";
+	getline(cin, email);
+
     //Student s;
-    Student* p = new Student();
-    mapStudent.insert(pair<string, Student*>(sid, p));
-    p->setId(stoi(sid));
-    p->setFirstName(firstName);
-    p->setLastName(lastName);
-    p->setAddress(address);
-    p->setCity(city);
-    p->setState(state);
-    p->setZip(zip);
-    p->setPhone(phoneNumber);
-    p->setEmail(email);
-    list->addQueue(*p);*/
+    try {
+        //Student s;
+        Student* p = new Student();
+        try {
+            p->setId(stoi(sid));
+        } catch(exception& e){
+            throw stoiExcept;
+        }
+        p->setFirstName(firstName);
+        p->setLastName(lastName);
+        p->setAddress(address);
+        p->setCity(city);
+        p->setState(state);
+        p->setZip(zip);
+        p->setPhone(phoneNumber);
+        p->setEmail(email);
+        list->addQueue(*p);
+        mapStudent.insert(pair<string, Student*>(sid, p));
+
+    } catch(stoiException& e){
+        cout << e.what() << endl;
+    }
 }
 
 void StudentMenu::doEdit() {
     cout << "Enter student Id: ";
     string sid;
     cin >> sid;
-    Student *p = mapStudent[sid];
+    cout << "Enter new address: ";
+    string address;
+    cin >> address;
+    map<string, Student*>::iterator itr;
+    for (itr = mapStudent.begin(); itr != mapStudent.end(); ++itr) {
+        if((itr->second)->getId() == stoi(sid)){
+            (itr->second)->setAddress(address);
+            cout << itr->second->getAddress() << endl;
+            cout << mapStudent[sid]->getAddress() << endl;
+        }
+    }
+    doList();
+    //mapStudent[sid]->setAddress(address);
 }
 
 void StudentMenu::doDelete() {
    cout << "Enter student Id: ";
    string sid;
    cin >> sid;
-   delete mapStudent[sid];
+   mapStudent.erase(sid);
 }
 
 /**
@@ -161,5 +221,17 @@ void StudentMenu::doDelete() {
 */
 void StudentMenu::doSave() {
     cout << "Saving... " << STUDENT_DATA << endl;
-    // TODO
+    if (inFile.is_open()) {
+        Student* p;
+        map<string, Student*>::iterator it;
+        for (it = mapStudent.begin(); it != mapStudent.end(); ++it){
+            p = it->second;
+            //inFile << p->toCSV() << endl;
+        }
+    }
+    else {
+        cerr << "Failed to open file : " << STUDENT_DATA
+            << " (errno " << errno << ")" << endl;
+    }
+    cout << "Save!!!" << endl << endl;
 }

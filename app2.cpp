@@ -1,9 +1,13 @@
 #include <iostream>
-#include "courseMenu.cpp"
+#include "studentMenu.cpp"
 
 using namespace std;
 int main() {
-    CourseMenu menu;
-
+    StudentMenu men;
+    men.doView();
+    men.doEdit();
+    men.doList();
+    men.doDelete();
+    men.doList();
     return 0;
 }

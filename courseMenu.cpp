@@ -53,7 +53,8 @@ void CourseMenu::init() {
                 break;
             }
             cout << except.what() << endl;
-            cout << "Enter filename: " << endl;
+            cout << "Enter filename: ";
+            cin.ignore();
             cin >> filename;
         }
     }
@@ -70,6 +71,8 @@ void CourseMenu::init() {
     string meetInfo;
     string instructor;
     string units;
+
+    stoiException stoixcept;
 
     string line = "";
     while (getline(inFile, line)) {
@@ -91,7 +94,11 @@ void CourseMenu::init() {
         Course* p = &c;
         try {
             p->setTerm(term);
-            p->setYear(stoi(year));
+            try {
+				p->setYear(stoi(year));
+			} catch(exception& e){
+				throw stoixcept;
+			}
             p->setStartDate(startDate);
             p->setEndDate(endDate);
             p->setName(name);
@@ -104,16 +111,14 @@ void CourseMenu::init() {
             // Lab 5 - find and update faculty
             Faculty* f = facultyMenu.find(p->getInstructor());
             p->setInstructor(*f);
-            p->setUnits(stoi(units));
+            try {
+				p->setUnits(stoi(units));
+			} catch(exception& e){
+				throw stoixcept;
+			}
             list->insertEnd(*p);
-        } 
-
-        catch (exception& /**stoi*/){
-            
-        }
-
-        catch (exception& c){
-
+        } catch(stoiException& e){
+            cout << e.what() << endl;
         }
     }
     inFile.clear();
@@ -157,6 +162,7 @@ void CourseMenu::doAdd() {
     string meetInfo;
     string instructor;
     string units;
+    stoiException stoixcept;
 
     cout << "Enter Term: ";
     cin >> term;
@@ -182,22 +188,34 @@ void CourseMenu::doAdd() {
     cin >> instructor;
     cout << "Enter units: ";
     cin >> units;
-    p->setTerm(term);
-    p->setYear(stoi(year));
-    p->setStartDate(startDate);
-    p->setEndDate(endDate);
-    p->setName(name);
-    p->setSection(section);
-    p->setId(id);
-    p->setMeetDays(meetDays);
-    p->setLocation(location);
-    p->setMeetInfo(meetInfo);
-    p->setInstructor(instructor);    
-    // Lab 5 - find and update faculty
-    Faculty* f = facultyMenu.find(p->getInstructor());
-    p->setInstructor(*f);
-    p->setUnits(stoi(units));
-    list->insertEnd(*p);
+    try {
+            p->setTerm(term);
+            try {
+				p->setYear(stoi(year));
+			} catch(exception& e){
+				throw stoixcept;
+			}
+            p->setStartDate(startDate);
+            p->setEndDate(endDate);
+            p->setName(name);
+            p->setSection(section);
+            p->setId(id);
+            p->setMeetDays(meetDays);
+            p->setLocation(location);
+            p->setMeetInfo(meetInfo);
+            p->setInstructor(instructor);
+            // Lab 5 - find and update faculty
+            Faculty* f = facultyMenu.find(p->getInstructor());
+            p->setInstructor(*f);
+            try {
+				p->setUnits(stoi(units));
+			} catch(exception& e){
+				throw stoixcept;
+			}
+            list->insertEnd(*p);
+        } catch(stoiException& e){
+            cout << e.what() << endl;
+        }
 }
 
 void CourseMenu::doEdit() {

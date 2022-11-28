@@ -4,8 +4,10 @@
 #include <iomanip>
 #include <fstream>
 #include "assignment.h"
+#include "stoiException.h"
 
 using namespace std;
+stoiException except;
 
 Assignment::Assignment() {
 	points = 0;
@@ -93,18 +95,42 @@ istream& operator>>(istream& in, Assignment& a) {
 	cout << "Enter possible points " << s << ": ";
 	getline(in, line);
 	if (!line.empty()) {
-		a.setPossiblePoint(stoi(line));
+		try {
+			try {
+				a.setPossiblePoint(stoi(line));
+			} catch(exception& e){
+				throw except;
+			}
+        } catch(stoiException& e){
+            cout << e.what() << endl;
+        }
 	}
 	s = a.getPoint() > 0 ? "(" + to_string(a.getPoint()) + ")" : "";
 	cout << "Enter points " << s << ": ";
 	getline(in, line);
 	if (!line.empty()) {
-		a.setPoint(stoi(line));
+		try {
+			try {
+				a.setPoint(stoi(line));
+			} catch(exception& e){
+				throw except;
+			}
+        } catch(stoiException& e){
+            cout << e.what() << endl;
+        }
 	}
 	cout << "Enter status" << " (0=Pending; 1=DONE): ";
 	getline(in, line);
 	if (!line.empty()) {
-		a.setStatus(stoi(line));
+		try {
+			try {
+				a.setStatus(stoi(line));
+			} catch(exception& e){
+				throw except;
+			}
+        } catch(stoiException& e){
+            cout << e.what() << endl;
+        }
 	}
 
 	return in;
