@@ -97,7 +97,7 @@ void DateTime::setDateTime(string dateTime) {
 	else {
 		stime = dateTime;
 	}
-	hr = stoi(stime.substr(0, 2));
+;	hr = stoi(stime.substr(0, 2));
 	min = stoi(stime.substr(3, 2));
 	sec = stoi(stime.substr(6, 2));
 }

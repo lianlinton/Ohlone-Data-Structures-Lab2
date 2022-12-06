@@ -121,7 +121,8 @@ void CourseMenu::init() {
             cout << e.what() << endl;
         }
     }
-    inFile.clear();
+    inFile.close();
+    //inFile.clear();
 }
 
 void CourseMenu::doList() {
@@ -216,6 +217,7 @@ void CourseMenu::doAdd() {
         } catch(stoiException& e){
             cout << e.what() << endl;
         }
+
 }
 
 void CourseMenu::doEdit() {
@@ -282,5 +284,22 @@ void CourseMenu::doSortedList() {
 * Save to file
 */
 void CourseMenu::doSave() {
-    // TODO
+    cout << "Saving... " << COURSE_DATA << endl;
+    string filename = COURSE_DATA;
+    inFile.open(filename);
+    if (inFile.is_open()) {
+        Course* p;
+        for (int i = 1; i <= list->listSize(); i++) {
+            //list->retrieveAt(i - 1, p);
+            p = list->at(i - 1);
+            inFile << p->toCSV() << endl;
+        }
+    }
+    else {
+        cerr << "Failed to open file : " << COURSE_DATA
+            << " (errno " << errno << ")" << endl;
+    }
+    inFile.close();
+    cout << "Save!!!" << endl << endl;
+    
 }

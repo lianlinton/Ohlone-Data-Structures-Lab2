@@ -63,7 +63,7 @@ bool MyCanvas::doCourseMenu() {
 			courseMenu.doDelete();
 		}
 		else if (option == COURSE_MENU_OPTION::COURSE_EXIT) {
-			// TODO courseMenu.doSave();
+			courseMenu.doSave();
 			cout << "Exiting Course Menu" << endl;
 		}
 	} while (option != EXIT);
