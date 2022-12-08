@@ -32,7 +32,7 @@ string Course::toCSV() {
 	return term + "," + to_string(year) + "," + startDate.toString() + ","
 		+ endDate.toString() + "," + name + "," + section + ","
 		+ id + "," + meetDays + "," + location + ","
-		+ meetInfo + "," + instructor.getLastName() + "," + to_string(units);
+		+ meetInfo + "," + to_string(instructor.getId()) + "," + to_string(units);
 }
 //Print to console the course information in nice formatting
 void Course::print()  {
