@@ -7,7 +7,6 @@
 using namespace std;
 
 DiscussionListType::DiscussionListType() {
-	// TODO...
 }
 
 Discussion* DiscussionListType::search(string fullname) {	

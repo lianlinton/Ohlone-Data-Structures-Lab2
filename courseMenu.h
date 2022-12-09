@@ -29,7 +29,7 @@ public:
 	void doAdd();
 	void doEdit();
 	void doDelete();
-	void doSave();			// TODO
+	void doSave();			
 	void doFacultyMenu();	// Lab 5
 	void doSortedList();	// Lab 5
 

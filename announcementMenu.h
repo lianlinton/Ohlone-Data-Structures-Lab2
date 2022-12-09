@@ -22,7 +22,6 @@ enum ANNOUNCEMENT_MENU_OPTION {
 };
 
 class AnnouncementMenu : public Menu {
-	// TODO
 	friend ostream& operator<<(ostream&, Announcement&);
 	friend istream& operator>>(istream& in, Announcement& a);	
 
@@ -36,7 +35,7 @@ public:
 	void doAdd();
 	void doEdit();
 	void doDelete();
-	void doSave();			// TODO
+	void doSave();			
 
 	Announcement& getSelected() {
 		return *pSelected;
