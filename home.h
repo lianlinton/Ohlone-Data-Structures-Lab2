@@ -5,8 +5,6 @@ using namespace std;
 
 class Home {
     public:
-        // TODO
 
     private:
-        // TODO
 };

@@ -8,10 +8,8 @@ using namespace std;
 
 AnnouncementListType::AnnouncementListType() 
 	:LinkedStackType() {
-	// TODO
 }
 
 Announcement* AnnouncementListType::search(string title) {
-	// TODO
 	return nullptr;
 }

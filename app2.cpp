@@ -1,10 +1,9 @@
 #include <iostream>
-#include "courseMenu.cpp"
+#include "loginMenu.cpp"
 
 using namespace std;
 int main() {
-    CourseMenu men;
+    LoginMenu men;
     men.doSave();
-    men.doView();
     return 0;
 }

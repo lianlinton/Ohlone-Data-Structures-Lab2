@@ -68,6 +68,7 @@ void DiscussionMenu::init() {
         list->insertLast(d);
     }
     inFile.clear();
+    inFile.close();
 }
 void DiscussionMenu::doList() {
     cout << "***** Discussions *****" << endl;
@@ -96,8 +97,20 @@ void DiscussionMenu::doView() {
 
 void DiscussionMenu::doAdd() {
     cout << "***** Add New Discussion *****" << endl;
+    string user;
+    string date; // convert previous date string to class DateType
+    string post;
+    cout << "Enter student name: ";
+    cin >> user;
+    cout << "Enter date (MM/DD/YYYY): ";
+    cin >> date;
+    cout << "Enter message: ";
+    cin >> post;
     Discussion d;
-    cin >> d;
+    Student s(user);
+    d.setStudent(s);
+    d.setDateTime(date);
+    d.setText(post);
     list->insertLast(d);
 }
 
@@ -109,7 +122,10 @@ void DiscussionMenu::doEdit() {
     Discussion* p = list->search(fullname);
 
     if (p != nullptr) {
-        // TODO...
+        cout << "Enter new title (" << p->getText() << "): ";
+        string newText;
+        getline(cin, newText);
+        p->setText(newText);
     }
     else {
         cout << "Not found: " << fullname << endl;
@@ -118,11 +134,13 @@ void DiscussionMenu::doEdit() {
 
 void DiscussionMenu::doDelete() {
     cout << "***** Delete Discussion *****" << endl;
-    if (pDiscussion == nullptr) {
-        cout << "Which discussion do you want to delete? " << endl;
-        doList();
-    }
-    // TODO...
+    cout << "Which discussion do you want to delete? " << endl;
+    doList();
+    cout << "Enter (\"firstname middlename(optional) lastname\"): ";
+    string fullname;
+    getline(cin, fullname);
+    Discussion* p = list->search(fullname);
+    list->deleteNode(*p);
 }
 
 /**
@@ -130,13 +148,19 @@ void DiscussionMenu::doDelete() {
 */
 void DiscussionMenu::doSave() {
     cout << "Saving... " << DISCUSSION_DATA << endl;
+    string filename = DISCUSSION_DATA;
+    inFile.open(filename);
+    inFile.clear();
     if (inFile.is_open()) {
-        Discussion* p;
-        // TODO...
+        LinkedListIterator<Discussion> it;
+        for (it = list->begin(); it != list->end(); ++it) {        
+            ((Discussion*) &(*it))->toCSV();
+        }
     }
     else {
         cerr << "Failed to open file : " << DISCUSSION_DATA
             << " (errno " << errno << ")" << endl;
     }
-    cout << "Save!!!" << endl << endl;
+    inFile.close();
+    cout << "Save!!!" << endl << endl;   
 }

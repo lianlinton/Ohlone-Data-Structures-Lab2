@@ -43,8 +43,17 @@ DateType& DateType::getDate() {
 
 //Date format - mm/dd/yyyy
 string DateType::toString() const {	
-	return !isEmpty() ?
-		to_string(month) + FORMAT_SEPARATOR + to_string(day) + FORMAT_SEPARATOR + to_string(year) : "";
+	string date;
+	if (month < 10){
+		if (day < 10){
+			date = "0"+to_string(month)+"/0"+to_string(day)+"/"+to_string(year);
+		} else {
+			date = "0"+to_string(month)+"/"+to_string(day)+"/"+to_string(year);
+		}
+	} else {
+		date = ""+to_string(month)+"/"+to_string(day)+"/"+to_string(year);
+	}
+	return date;
 }
 
 bool DateType::operator>(const DateType& otherD) const {
@@ -104,8 +113,22 @@ void DateTime::setDateTime(string dateTime) {
 
 // Return MM/DD/YYYY HH:MM:SS
 string DateTime::toString() {
-	string stime = !isEmpty() ? (" " + to_string(hr) + ":" + to_string(min) + ":" + to_string(sec)) : "";
-	return this->getDate().toString() + stime;
+	string time;
+	if (hr < 10){
+		if (min < 10){
+			if (sec < 10){
+				time = "0"+to_string(hr)+":0"+to_string(min)+":0"+to_string(sec);
+			} else {
+				time = "0"+to_string(hr)+":0"+to_string(min)+":"+to_string(sec);
+			}
+		} else {
+			time = "0"+to_string(hr)+":"+to_string(min)+":"+to_string(sec);
+		}
+	} else {
+		time = ""+to_string(hr)+":"+to_string(min)+":"+to_string(sec);
+	}
+
+	return this->getDate().toString() +" "+ time;
 }
 
 bool DateTime::operator>(const DateTime& otherD) const {

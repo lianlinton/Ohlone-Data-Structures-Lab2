@@ -5,7 +5,6 @@
 using namespace std;
 
 class Discussion {
-    // TODO
     friend ostream& operator<<(ostream&, Discussion& d);
     friend istream& operator>>(istream& in, Discussion& d);
 
@@ -48,6 +47,8 @@ public:
     bool operator>(const Discussion&) const;
     bool operator==(const Discussion&) const;
     bool operator!=(const Discussion&) const;
+
+    string toCSV();
     
 private:
     Student student;    

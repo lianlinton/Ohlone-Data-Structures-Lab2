@@ -24,9 +24,9 @@ public:
 	void doLogout();
 	void doCreate();
 	void doReset();
-	void doSave();			// TODO
+	void doSave();			
 
-	
+	string currentTime();
 
 private:
 	fstream inFile;

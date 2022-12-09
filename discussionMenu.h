@@ -33,7 +33,7 @@ public:
 	void doAdd();
 	void doEdit();
 	void doDelete();
-	void doSave();			// TODO
+	void doSave();			
 	Discussion& getSelectedDiscussion() {
 		return *pDiscussion;
 	};

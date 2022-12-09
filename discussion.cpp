@@ -72,3 +72,10 @@ istream& operator>>(istream& in, Discussion& a) {
 	// cin >> p;
 	return in;
 }
+
+string Discussion::toCSV(){
+	//Fall 2022 semester begins 08/29/2022
+	//08/29/2022
+	//Hello Students, The first-class meeting starts on Tuesday, 08/30/2022, at 6:30 PM, in room NC2308. Jim D. Pham
+	return this->getName()+"\n"+postDate.toString()+"\n"+text;
+}

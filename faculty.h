@@ -27,6 +27,11 @@ public:
 	bool operator>=(const Faculty&) const;
 	bool operator<=(const Faculty&) const;
 
+	string toCSV(){
+		//2,Yong,Gao,CS,43600 Mission Blvd.,Fremont,CA,94538,ygao@ohlone.edu,510-659-6000
+		return to_string(id)+","+firstName+","+lastName+","+departmentName+","+address+","+city+","+state+","+zip+","+email+","+phone;
+	};
+
 private:
 	 // int facultyId; // lab 5 - Person::id
 	 string departmentName; 

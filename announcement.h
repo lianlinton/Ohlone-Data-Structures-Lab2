@@ -30,7 +30,9 @@ class Announcement{
         bool operator>(const Announcement&) const;
         bool operator==(const Announcement&) const;
         bool operator!=(const Announcement&) const;
-        //void operator=(Announcement&) const;          
+        //void operator=(Announcement&) const;  
+
+        string toCSV();        
 
     private:
         string title;

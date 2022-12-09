@@ -34,9 +34,5 @@ private:
 	DiscussionMenu discussionMenu;			// TODO: Lab 5 - Use LinkedList<Discussion*>
 	AnnouncementMenu announcementMenu;		// TODO: Lab 5 - Use LinkedStack<Announcement*>
 
-	// TODO:
-	// HomeMenu homeMenu;	
-	// GradeMenu gradeMenu;
-	// SyllabusMenu syllabus;
 };
 

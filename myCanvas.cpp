@@ -30,6 +30,7 @@ bool MyCanvas::doLogin() {
 			break;
 		case LOGIN_MENU_OPTION::EXIT:
 			cout << "Exiting Login Menu" << endl;
+			loginMenu.doLogout();
 			return false;
 		default: {}
 	}
@@ -95,7 +96,7 @@ void MyCanvas::doMainMenu() {
 			mainMenu.doStudentMenu();
 		}
 		else if (option == MAIN_MENU_OPTION::MAIN_MENU_SYLLABUS) {
-			// TODO mainMenu.doSyllabus();
 		} // else EXIT
 	} while (option != MAIN_MENU_OPTION::MAIN_MENU_EXIT);
+	loginMenu.doLogout();
 }

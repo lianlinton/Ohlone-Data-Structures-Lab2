@@ -24,7 +24,6 @@ Course::Course() {
 }
 
 Course::~Course() {
-	// TODO...
 }
 
 //Return the course information as a string in CSV format

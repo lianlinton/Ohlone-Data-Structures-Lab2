@@ -41,3 +41,10 @@ bool Announcement::operator<=(const Announcement& otherF) const {
 	otherF.setDateType(this->postDate);
 	otherF.setText(this->text);
 }*/
+
+string Announcement::toCSV(){
+	//Fall 2022 semester begins 08/29/2022
+	//08/29/2022
+	//Hello Students, The first-class meeting starts on Tuesday, 08/30/2022, at 6:30 PM, in room NC2308. Jim D. Pham
+	return title+"\n"+postDate.toString()+"\n"+text;
+}

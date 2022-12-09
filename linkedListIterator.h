@@ -34,7 +34,7 @@ public:
     //               node.
     LinkedListIterator<Type> operator++();    
 
-    LinkedListIterator<Type> operator--(); // TODO
+    LinkedListIterator<Type> operator--(); 
 
 private:
     NodeType<Type>* current; //pointer to point to the current
@@ -63,7 +63,6 @@ LinkedListIterator<Type> LinkedListIterator<Type>::operator++(){
 
 template <class Type>
 LinkedListIterator<Type> LinkedListIterator<Type>::operator--() {
-    // TODO
     current = current->back;
     return *this;
 }

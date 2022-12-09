@@ -70,6 +70,7 @@ void AnnouncementMenu::init() {
         annCount++;
     }
     inFile.clear();
+    inFile.close();
     //table.setTableSize(annCount);
 }
 
@@ -165,19 +166,23 @@ void AnnouncementMenu::doDelete() {
 /**
 * Save to file
 */
-void AnnouncementMenu::doSave() {    
+void AnnouncementMenu::doSave() {  
     cout << "Saving... " << ANNOUNCEMENT_DATA << endl;
+    string filename = ANNOUNCEMENT_DATA;
+    inFile.open(filename);
+    inFile.clear();
     if (inFile.is_open()) {
-        Announcement* p;
-        /*HashMapTable table::iterator it;
-        for (it = mapStudent.begin(); it != mapStudent.end(); ++it){
-            p = it->second;
-            //inFile << p->toCSV() << endl;
-        }*/
+        LinkedStackType<Announcement> copy = *list;
+        while (!copy.isEmptyStack()) {
+            Announcement a = copy.top();
+            inFile << a.toCSV() << endl;
+            copy.pop(); // advance to next
+        }
     }
     else {
         cerr << "Failed to open file : " << ANNOUNCEMENT_DATA
             << " (errno " << errno << ")" << endl;
     }
-    cout << "Save!!!" << endl << endl;
+    inFile.close();
+    cout << "Save!!!" << endl << endl;   
 }

@@ -197,6 +197,9 @@ void FacultyMenu::doAdd() {
 	} catch(stoiException& e){
 		cout << e.what() << endl;
 	}
+
+	inFile.clear();
+	inFile.close();
 }
 
 void FacultyMenu::doEdit() {
@@ -306,5 +309,23 @@ Faculty* FacultyMenu::find(Faculty& f) {
 * Save to file
 */
 void FacultyMenu::doSave() {
-	// TODO
+	cout << "Saving... " << FACULTY_DATA << endl;
+    string filename = FACULTY_DATA;
+    inFile.open(filename);
+    inFile.clear();
+	Faculty f;
+	Faculty* p = &f;
+    if (inFile.is_open()) {
+        // retrieves each element from faculty array p
+		for (int i = 1; i <= list->listSize(); i++) {
+			list->retrieveAt(i - 1, *p);
+			inFile << p->toCSV() << endl;
+		}
+	}
+    else {
+        cerr << "Failed to open file : " << FACULTY_DATA
+            << " (errno " << errno << ")" << endl;
+    }
+    inFile.close();
+    cout << "Save!!!" << endl << endl;   
 }

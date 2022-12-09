@@ -12,7 +12,6 @@ Login::Login(){
 	password = "";
 }
 
-// TODO Final Exam
 void Login::setLoginTime(string s) {
 	DateTime dt;
 	dt.setDateTime(s);

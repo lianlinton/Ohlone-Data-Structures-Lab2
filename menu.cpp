@@ -48,6 +48,7 @@ void Menu::displayPrefixIndex() const {
 int Menu::getInput() const {
     char ch;
     int input = 0;
+    //cin.ignore();
     do {
         displayPrefixIndex();
         cin >> ch;

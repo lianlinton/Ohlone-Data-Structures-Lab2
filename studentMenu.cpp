@@ -99,6 +99,7 @@ void StudentMenu::init() {
         }
     }
     inFile.clear();
+    inFile.close();
 }
 
 void StudentMenu::doList() {
@@ -220,18 +221,21 @@ void StudentMenu::doDelete() {
 * Save to file
 */
 void StudentMenu::doSave() {
-    cout << "Saving... " << STUDENT_DATA << endl;
+	cout << "Saving... " << STUDENT_DATA << endl;
+    string filename = STUDENT_DATA;
+    inFile.open(filename);
+    inFile.clear();
     if (inFile.is_open()) {
-        Student* p;
         map<string, Student*>::iterator it;
         for (it = mapStudent.begin(); it != mapStudent.end(); ++it){
-            p = it->second;
-            //inFile << p->toCSV() << endl;
+            inFile << it->second->toCSV() << endl;
         }
-    }
+	}
     else {
         cerr << "Failed to open file : " << STUDENT_DATA
             << " (errno " << errno << ")" << endl;
     }
-    cout << "Save!!!" << endl << endl;
+    inFile.close();
+    cout << "Save!!!" << endl << endl;   
+
 }

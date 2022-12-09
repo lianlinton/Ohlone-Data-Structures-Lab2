@@ -17,7 +17,6 @@ class Login {
 			password = pass;
 		};
 
-		// TODO Final Exam
 		void setLoginTime(string s);
 		void setLoginTime(DateTime& d) {
 			loginDateTime = d;
@@ -31,12 +30,18 @@ class Login {
 		//Accessor member functions
 		string getUsername() const { return username; };
 		string getPassword() const { return password; };
+		DateTime getLoginDate() { return loginDateTime;};
+		DateTime getLogoutDate() { return logoutDateTime;};
 		
 
 		//Overloaded operators
 		Login& operator=(const  Login& other);
 		bool operator>=(const Login&) const;
 		bool operator==(const Login&) const;
+
+		string toCSV(){
+			return username+","+password+","+loginDateTime.toString()+","+logoutDateTime.toString();
+		}
 
     private:
        string username;

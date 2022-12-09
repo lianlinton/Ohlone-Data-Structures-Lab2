@@ -121,23 +121,24 @@ void CourseMenu::init() {
             cout << e.what() << endl;
         }
     }
-    inFile.clear();
+    //inFile.clear();
     inFile.close();
 }
 
 void CourseMenu::doList() {
     Menu menu("List of Courses");
     Course* p = nullptr;
-    cin.ignore();
+    //cin.ignore();
     for (int i = 1; i <= list->listSize(); i++) {
         //list->retrieveAt(i - 1, c);
         p = list->at(i - 1);
         menu.addOption(p->getTerm() + " " + to_string(p->getYear()) + " " + p->getSection() + " " + p->getName());
     }
     int input = menu.getInput();
+    cout << input << endl;
     //list->retrieveAt(input - 1, c);
-    p = list->at(input - 1);
-    this->selectedCourse(*p);
+    p = list->at(input-1);
+    pCourse = p;
 }
 
 void CourseMenu::doView() {
@@ -165,7 +166,7 @@ void CourseMenu::doAdd() {
     string instructor;
     string units;
     stoiException stoixcept;
-
+    //cin.ignore();
     cout << "Enter Term: ";
     cin >> term;
     cout << "Enter Year: ";
@@ -220,9 +221,40 @@ void CourseMenu::doAdd() {
     } catch(stoiException& e){
         cout << e.what() << endl;
     }
-    this->selectedCourse(*p);
+    pCourse = nullptr;
+    //this->selectedCourse(*p);
 
-
+    
+   /*try {
+        p->setTerm("7");
+        try {
+            p->setYear(stoi("7"));
+        } catch(exception& e){
+            throw stoixcept;
+        }
+        p->setStartDate("7/7/7");
+        p->setEndDate("7/7/7");
+        p->setName("7");
+        p->setSection("7");
+        p->setId("7");
+        p->setMeetDays("7");
+        p->setLocation("7");
+        p->setMeetInfo("7");
+        p->setInstructor("7");
+        // Lab 5 - find and update faculty
+        Faculty* f = facultyMenu.find(p->getInstructor());
+        p->setInstructor(*f);
+        try {
+            p->setUnits(stoi("7"));
+        } catch(exception& e){
+            throw stoixcept;
+        }
+        list->insertEnd(*p);
+    } catch(stoiException& e){
+        cout << e.what() << endl;
+    }
+    //this->selectedCourse(*p);*/
+   
 
 }
 
@@ -241,14 +273,14 @@ void CourseMenu::doEdit() {
         p->setTerm(temp);
     }
     
-    p->print();
+    pCourse = nullptr;
 }
 
 void CourseMenu::doDelete() {
     if (pCourse == nullptr) {
         doList();
     }
-    getSelectedCourse().print();
+    //getSelectedCourse().print();
     list->remove(getSelectedCourse());
     pCourse = nullptr;
 }
@@ -274,7 +306,7 @@ void CourseMenu::doFacultyMenu() {
             facultyMenu.doDelete();
         }
         else if (option == FACULTY_MENU_OPTION::FACULTY_EXIT) {
-            // TODO facultyMenu.doSave();
+            facultyMenu.doSave();
             cout << "Exiting Faculty Menu" << endl;
         }
     } while (option != FACULTY_MENU_OPTION::FACULTY_EXIT);
@@ -295,6 +327,7 @@ void CourseMenu::doSave() {
     cout << "Saving... " << COURSE_DATA << endl;
     string filename = COURSE_DATA;
     inFile.open(filename);
+    inFile.clear();
     if (inFile.is_open()) {
         Course* p;
         for (int i = 1; i <= list->listSize(); i++) {
@@ -308,6 +341,5 @@ void CourseMenu::doSave() {
             << " (errno " << errno << ")" << endl;
     }
     inFile.close();
-    cout << "Save!!!" << endl << endl;
-    
+    cout << "Save!!!" << endl << endl;   
 }
